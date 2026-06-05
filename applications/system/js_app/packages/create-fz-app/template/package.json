@@ -1,0 +1,12 @@
+{
+  "name": "<app_name>",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc && node node_modules/@next-flip/fz-sdk-g4mw/sdk.js build",
+    "start": "npm run build && node node_modules/@next-flip/fz-sdk-g4mw/sdk.js upload"
+  },
+  "devDependencies": {
+    "@next-flip/fz-sdk-g4mw": "^1.0",
+    "typescript": "^5.6.3"
+  }
+}

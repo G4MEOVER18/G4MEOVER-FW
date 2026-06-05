@@ -1,0 +1,11 @@
+App(
+    appid="g4meover_app",
+    name="G4MEOVER",
+    apptype=FlipperAppType.MENUEXTERNAL,
+    entry_point="g4meover_app",
+    stack_size=2 * 1024,
+    flags=["InsomniaSafe"],
+    icon="A_G4MEOVER_14",
+    order=90,
+    fap_category="assets",
+)
