@@ -96,6 +96,17 @@ cd applications/external/lora_ukfe && ufbt
 | API | 87.1 |
 | GCC | ARM GCC 12.3.1 (v39) |
 
+
+---
+
+## Verwandte Projekte
+
+| Projekt | Beschreibung |
+|---|---|
+| [ProtoPirate](https://github.com/G4MEOVER18/ProtoPirate) | Car Keyfob RF Decoder/Emulator (27+ Protokolle) |
+| [RollJam](https://github.com/G4MEOVER18/RollJam) | RollJam Attack PoC — CC1101 Jam + Capture + Replay |
+| [RollLab](https://github.com/G4MEOVER18/RollLab) | Rolling Code Vulnerability Lab |
+| [lora-ukfe](https://github.com/G4MEOVER18/lora-ukfe) | USB Army Penetrator — Remote-Control via Heltec ESP32 LoRa v3 |
 ---
 
 ## Rechtlicher Hinweis
