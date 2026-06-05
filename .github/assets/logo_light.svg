@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="200" viewBox="0 0 900 200">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#059669" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="200" fill="#f8fafc" rx="12"/>
+  <rect width="900" height="200" fill="none" stroke="#059669" stroke-width="1.5" rx="12" opacity="0.5"/>
+  <rect x="0" y="0" width="6" height="200" fill="#059669" rx="3"/>
+
+  <!-- Icon -->
+  <g transform="translate(48, 60)">
+    <rect x="0" y="0" width="80" height="80" rx="8" fill="none" stroke="#059669" stroke-width="2"/>
+    <line x1="-10" y1="20" x2="0" y2="20" stroke="#059669" stroke-width="2"/>
+    <line x1="-10" y1="40" x2="0" y2="40" stroke="#059669" stroke-width="2"/>
+    <line x1="-10" y1="60" x2="0" y2="60" stroke="#059669" stroke-width="2"/>
+    <line x1="80" y1="20" x2="90" y2="20" stroke="#059669" stroke-width="2"/>
+    <line x1="80" y1="40" x2="90" y2="40" stroke="#059669" stroke-width="2"/>
+    <line x1="80" y1="60" x2="90" y2="60" stroke="#059669" stroke-width="2"/>
+    <line x1="20" y1="-10" x2="20" y2="0" stroke="#059669" stroke-width="2"/>
+    <line x1="60" y1="-10" x2="60" y2="0" stroke="#059669" stroke-width="2"/>
+    <line x1="20" y1="80" x2="20" y2="90" stroke="#059669" stroke-width="2"/>
+    <line x1="60" y1="80" x2="60" y2="90" stroke="#059669" stroke-width="2"/>
+    <rect x="16" y="16" width="48" height="48" rx="4" fill="#059669" opacity="0.08"/>
+    <rect x="16" y="16" width="48" height="48" rx="4" fill="none" stroke="#059669" stroke-width="1" opacity="0.5"/>
+    <text x="40" y="46" font-family="monospace" font-size="22" font-weight="900" fill="#059669" text-anchor="middle">G4</text>
+  </g>
+
+  <!-- Main title -->
+  <text x="178" y="90" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',monospace" font-size="64" font-weight="900" fill="#064e3b" filter="url(#shadow)" letter-spacing="2">G4MEOVER</text>
+  <text x="180" y="125" font-family="monospace" font-size="15" font-weight="600" fill="#475569" letter-spacing="4">CUSTOM FLIPPER ZERO FIRMWARE</text>
+
+  <g transform="translate(180, 148)">
+    <rect x="0" y="0" width="90" height="22" rx="4" fill="#059669" opacity="0.12"/>
+    <text x="45" y="15" font-family="monospace" font-size="10" font-weight="700" fill="#059669" text-anchor="middle" letter-spacing="1">API 87.1</text>
+    <rect x="98" y="0" width="110" height="22" rx="4" fill="#7c3aed" opacity="0.12"/>
+    <text x="153" y="15" font-family="monospace" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle" letter-spacing="1">mntm-012</text>
+    <rect x="216" y="0" width="110" height="22" rx="4" fill="#0891b2" opacity="0.12"/>
+    <text x="271" y="15" font-family="monospace" font-size="10" font-weight="700" fill="#0891b2" text-anchor="middle" letter-spacing="1">lora_ukfe</text>
+    <rect x="334" y="0" width="110" height="22" rx="4" fill="#d97706" opacity="0.12"/>
+    <text x="389" y="15" font-family="monospace" font-size="10" font-weight="700" fill="#d97706" text-anchor="middle" letter-spacing="1">CH-DE BadUSB</text>
+  </g>
+
+  <g transform="translate(760, 75)">
+    <rect x="0" y="0" width="110" height="50" rx="8" fill="#059669" opacity="0.08"/>
+    <rect x="0" y="0" width="110" height="50" rx="8" fill="none" stroke="#059669" stroke-width="1" opacity="0.4"/>
+    <text x="55" y="20" font-family="monospace" font-size="10" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="1">VERSION</text>
+    <text x="55" y="42" font-family="monospace" font-size="20" font-weight="900" fill="#059669" text-anchor="middle">v1.0.0</text>
+  </g>
+</svg>
