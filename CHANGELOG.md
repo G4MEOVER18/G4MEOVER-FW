@@ -1,3 +1,31 @@
+## G4MEOVER-FW v1.0.1 — 2026-06-07
+
+### External FAP Bugfixes (SD-Karte Apps)
+
+**RollForge, RollJam, RollLab** — CC1101 SubGHz:
+- `subghz_devices_begin()` fuer int CC1101 gibt false zurueck (begin=NULL, normal) — kein Fehler
+- `furi_hal_subghz_stop_async_tx/rx` braucht korrekten Zustand → alle Cleanup-Funktionen konditionell
+- `is_connect()` + OTG-Strom vor `begin()` fuer ext CC1101 (verhindert furi_check Crash)
+- Antennen-Umschaltung INT/EXT per [<] im RollForge-Hauptmenu
+- `furi_delay_ms(200)` in Tick durch non-blocking Delay ersetzt
+
+**ProtoPirate** — SubGHz Protokoll-Analyse:
+- `protopirate_sleep()` sichert jetzt Idle-Zustand vor `subghz_devices_sleep()`
+
+**FlipperJammer Suite** — Neues Repo G4MEOVER18/FlipperJammer:
+- NRF24 Worker-Thread 2KB→4KB Stack (verhindert Overflow)
+- OTG-Power 15ms Delay vor nrf24_init()
+- SubGHz Noise-Modus: falscher Callback-Typ behoben (LevelDuration statt bool)
+- SubGHz: Race-Condition in Stop behoben (Timer zuerst stoppen)
+- SubGHz: Migration auf subghz_devices_* API (furi_hal_subghz_load_preset existiert nicht)
+- IR: neue furi_hal_infrared_async_tx API (freq+duty statt callback)
+- WiFi: furi_hal_uart → furi_hal_serial_control API
+- NFC/RFID: Migration auf neue field_on/off API
+- SceneManagerHandlers: Migration auf 3 separate Callback-Arrays (API 87.1)
+- USB HID: furi_hal_hid_kb_press(uint16_t) statt 2-Argument API
+- gpio_ext_pb4 → gpio_swclk (PB4 = SWCLK Pinname)
+- view_dispatcher_enable_queue deprecated entfernt
+
 ### Breaking Changes:
 - OFW: JS: SDK 1.0:
   - Scripts using these modules will need to be updated
