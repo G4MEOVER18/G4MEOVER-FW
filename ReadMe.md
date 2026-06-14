@@ -115,7 +115,11 @@ Diese Firmware ist für **autorisierte Sicherheitstests, eigene Geräte und Secu
 
 ---
 
-## Support
+## Kontakt & Support
+
+**Entwickler:** Yanis Ameseder · **E-Mail:** [g4me.over.18@gmail.com](mailto:g4me.over.18@gmail.com)
+
+Fragen, Bug-Reports und Feature-Wünsche gerne per [Issue](https://github.com/G4MEOVER18/G4MEOVER-FW/issues) oder E-Mail.
 
 Wenn dir das Projekt nützlich ist:
 
@@ -130,7 +134,15 @@ BTC: 39vZWmnUwDReQ15BwqQXzyqVQ6U8LardEf
 
 ## Lizenz
 
-GPL-3.0 — basiert auf [Momentum Firmware](https://github.com/Next-Flip/Momentum-Firmware) (GPL-3.0)
+Diese Firmware steht unter der **GPL-3.0** und ist ein modifiziertes Werk auf Basis der
+[Momentum Firmware](https://github.com/Next-Flip/Momentum-Firmware) (mntm-012), die ihrerseits auf der
+offiziellen [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-firmware) aufbaut.
+
+Die Urheberrechte der jeweiligen Originalkomponenten verbleiben bei ihren Autoren
+(Flipper Devices Inc., dem Momentum-Team und den jeweiligen Mitwirkenden). Änderungen durch
+G4MEOVER (Branding, `lora_ukfe`-App, CH-DE BadUSB) erfolgen unter denselben GPL-3.0-Bedingungen;
+der vollständige Quelltext ist in diesem Repository öffentlich verfügbar. Den vollständigen
+Lizenztext findest du in der Datei [LICENSE](LICENSE).
 
 ---
 
