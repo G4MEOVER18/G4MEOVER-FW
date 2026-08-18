@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexHopperFrequency,
@@ -6,15 +6,15 @@ enum VarItemListIndex {
     VarItemListIndexAddHopperFreq,
 };
 
-void g4meover_app_scene_protocols_freqs_hopper_var_item_list_callback(
+void momentum_app_scene_protocols_freqs_hopper_var_item_list_callback(
     void* context,
     uint32_t index) {
-    G4MEOVERApp* app = context;
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-static void g4meover_app_scene_protocols_freqs_hopper_frequency_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_protocols_freqs_hopper_frequency_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     app->subghz_hopper_index = variable_item_get_current_value_index(item);
     uint32_t value = *FrequencyList_get(app->subghz_hopper_freqs, app->subghz_hopper_index);
     char text[10] = {0};
@@ -22,8 +22,8 @@ static void g4meover_app_scene_protocols_freqs_hopper_frequency_changed(Variable
     variable_item_set_current_value_text(item, text);
 }
 
-void g4meover_app_scene_protocols_freqs_hopper_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_hopper_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
@@ -31,7 +31,7 @@ void g4meover_app_scene_protocols_freqs_hopper_on_enter(void* context) {
         var_item_list,
         "Hopper Freq",
         FrequencyList_size(app->subghz_hopper_freqs),
-        g4meover_app_scene_protocols_freqs_hopper_frequency_changed,
+        momentum_app_scene_protocols_freqs_hopper_frequency_changed,
         app);
     app->subghz_hopper_index = 0;
     variable_item_set_current_value_index(item, app->subghz_hopper_index);
@@ -49,22 +49,22 @@ void g4meover_app_scene_protocols_freqs_hopper_on_enter(void* context) {
     variable_item_list_add(var_item_list, "Add Hopper Freq", 0, NULL, app);
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_protocols_freqs_hopper_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_protocols_freqs_hopper_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
         var_item_list,
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneProtocolsFreqsHopper));
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneProtocolsFreqsHopper));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_protocols_freqs_hopper_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_protocols_freqs_hopper_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
         scene_manager_set_scene_state(
-            app->scene_manager, G4MEOVERAppSceneProtocolsFreqsHopper, event.event);
+            app->scene_manager, MomentumAppSceneProtocolsFreqsHopper, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexRemoveHopperFreq:
@@ -102,8 +102,8 @@ bool g4meover_app_scene_protocols_freqs_hopper_on_event(void* context, SceneMana
             break;
         case VarItemListIndexAddHopperFreq:
             scene_manager_set_scene_state(
-                app->scene_manager, G4MEOVERAppSceneProtocolsFreqsAdd, true);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocolsFreqsAdd);
+                app->scene_manager, MomentumAppSceneProtocolsFreqsAdd, true);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocolsFreqsAdd);
             break;
         default:
             break;
@@ -113,7 +113,7 @@ bool g4meover_app_scene_protocols_freqs_hopper_on_event(void* context, SceneMana
     return consumed;
 }
 
-void g4meover_app_scene_protocols_freqs_hopper_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_hopper_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

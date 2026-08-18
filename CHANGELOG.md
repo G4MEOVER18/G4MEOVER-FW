@@ -1,30 +1,34 @@
-## G4MEOVER-FW v1.0.1 — 2026-06-07
+## G4MEOVER-FW v2.0.0 — 2026-08-05
 
-### External FAP Bugfixes (SD-Karte Apps)
+Eigenständiger, weiterentwickelter Fork auf Basis **Momentum mntm-012**.
 
-**RollForge, RollJam, RollLab** — CC1101 SubGHz:
-- `subghz_devices_begin()` fuer int CC1101 gibt false zurueck (begin=NULL, normal) — kein Fehler
-- `furi_hal_subghz_stop_async_tx/rx` braucht korrekten Zustand → alle Cleanup-Funktionen konditionell
-- `is_connect()` + OTG-Strom vor `begin()` fuer ext CC1101 (verhindert furi_check Crash)
-- Antennen-Umschaltung INT/EXT per [<] im RollForge-Hauptmenu
-- `furi_delay_ms(200)` in Tick durch non-blocking Delay ersetzt
+### Eigene Identität (Arcade / „GAME OVER"-Designsystem)
+- **Bootsequenz** (7 Frames): CRT-Power-on → Glitch → Wordmark-Reveal → „// PWNED BY YOU"
+- **Passport**: G4MEOVER-Layout + Skull-Mascots (happy / okay / bad = X-Augen)
+- **Desktop-Idle**: eigenes Asset-Pack `G4MEOVER` (Arcade-Attract-Loop, blinkender Skull + Glitch-Sweep) als **Default**
+- **README-Banner** + durchgängiges Branding `g4meover-2.0.0` (Origin, Version, About, CLI, alle sichtbaren Labels)
 
-**ProtoPirate** — SubGHz Protokoll-Analyse:
-- `protopirate_sleep()` sichert jetzt Idle-Zustand vor `subghz_devices_sleep()`
+### UX
+- **Eigene Hauptmenü-Reihenfolge**: Pentest-Tools nach vorn (SubGHz → NFC → RFID → IR → Bad USB → GPIO → …)
+- **Power-App-Keybinds** (Desktop-Langdruck): ▲ RollForge · ▼ FlipperJammer · ▶ ProtoPirate
 
-**FlipperJammer Suite** — Neues Repo G4MEOVER18/FlipperJammer:
-- NRF24 Worker-Thread 2KB→4KB Stack (verhindert Overflow)
-- OTG-Power 15ms Delay vor nrf24_init()
-- SubGHz Noise-Modus: falscher Callback-Typ behoben (LevelDuration statt bool)
-- SubGHz: Race-Condition in Stop behoben (Timer zuerst stoppen)
-- SubGHz: Migration auf subghz_devices_* API (furi_hal_subghz_load_preset existiert nicht)
-- IR: neue furi_hal_infrared_async_tx API (freq+duty statt callback)
-- WiFi: furi_hal_uart → furi_hal_serial_control API
-- NFC/RFID: Migration auf neue field_on/off API
-- SceneManagerHandlers: Migration auf 3 separate Callback-Arrays (API 87.1)
-- USB HID: furi_hal_hid_kb_press(uint16_t) statt 2-Argument API
-- gpio_ext_pb4 → gpio_swclk (PB4 = SWCLK Pinname)
-- view_dispatcher_enable_queue deprecated entfernt
+### Features / Fork-Verbesserungen
+- **MTP reaktiviert** — Upstream lieferte die MTP-App (USB-Dateiübertragung) durch ungültige appid deaktiviert aus; hier gefixt.
+- **Erweitertes MIFARE-Dictionary**: 2.475 → **4.475 Keys** (Merge Momentum-Basis + UberGuidoZ / Proxmark3 Iceman / RFIDResearchGroup) → deutlich höhere NFC-Dictionary-Trefferquote.
+- **Pentest-Default**: SubGHz erweiterter Frequenzbereich + Region-Bypass vorkonfiguriert (`extend_range.txt`; nur für autorisierte Tests).
+
+### Vorinstallierte Apps (268 in Resources)
+- Volle Community-Pentest-Suite (Marauder, Ghost ESP, Evil Portal, Blackhat, MFKey, NFC Magic, Picopass, Seader, Metroflip, SubGHz-Bruteforcer, NRF24-Suite, Fuzzer …)
+- **G4MEOVER Power-Suite**: RollForge, RollJam, RollLab, ProtoPirate, FlipperJammer, lora_ukfe
+- **Seltene Nicht-Katalog-Tools**: FlipDeFlock (Counter-Surveillance), Wendigo (WiFi/BT-Recon), FZ_nRF24_jammer
+
+### Bekannte offene Punkte
+- `cli_bridge` (CLI-GUI Bridge) bleibt deaktiviert — benötigt Portierung auf die neue mntm-012-CLI-Session-API (`CliSession` / `CliCommandTree` entfernt).
+
+### Credits & Lizenz
+Basierend auf **Momentum Firmware** (Next-Flip) und **Flipper Zero OFW** (Flipper Devices). Lizenziert unter **GPL-3.0**. Alle Upstream-Autoren behalten ihre Rechte; G4MEOVER-FW ist eine abgeleitete Arbeit für autorisierte Security-Forschung.
+
+---
 
 ### Breaking Changes:
 - OFW: JS: SDK 1.0:
@@ -132,7 +136,7 @@
 - BT Remote:
   - Add Rename Option for BT Remote, simplify Bad KB BLE profile (#439 by @aaronjamt & @WillyJL)
   - OFW: Make mouse clicker button selectable (by @LordMZTE)
-- G4MW Settings:
+- MNTM Settings:
   - Add Main Menu support for directories and generic files (including JS files) (#331 by @956MB & @WillyJL)
   - Add Skip Sliding Animations option for Lockscreen (#436 by @aaronjamt)
 - CLI:

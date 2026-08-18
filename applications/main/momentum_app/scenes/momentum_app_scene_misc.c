@@ -1,20 +1,20 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexScreen,
     VarItemListIndexDolphin,
     VarItemListIndexSpoof,
     VarItemListIndexVgm,
-    VarItemListIndexShowG4MEOVERIntro,
+    VarItemListIndexShowMomentumIntro,
 };
 
-void g4meover_app_scene_misc_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-void g4meover_app_scene_misc_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
@@ -33,44 +33,44 @@ void g4meover_app_scene_misc_on_enter(void* context) {
     variable_item_list_add(var_item_list, "Show G4MEOVER Intro", 0, NULL, app);
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_misc_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_misc_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
-        var_item_list, scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneMisc));
+        var_item_list, scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneMisc));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_misc_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_misc_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
-        scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMisc, event.event);
+        scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMisc, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexScreen:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscScreen, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscScreen);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscScreen, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscScreen);
             break;
         case VarItemListIndexDolphin:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscDolphin, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscDolphin);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscDolphin, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscDolphin);
             break;
         case VarItemListIndexSpoof:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscSpoof, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscSpoof);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscSpoof, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscSpoof);
             break;
         case VarItemListIndexVgm:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscVgm, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscVgm);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscVgm, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscVgm);
             break;
-        case VarItemListIndexShowG4MEOVERIntro: {
+        case VarItemListIndexShowMomentumIntro: {
             for(int i = 0; i < 10; i++) {
                 if(storage_common_copy(
                        app->storage, EXT_PATH("dolphin/firstboot.bin"), SLIDESHOW_FS_PATH)) {
                     app->show_slideshow = true;
-                    g4meover_app_apply(app);
+                    momentum_app_apply(app);
                     break;
                 }
             }
@@ -84,7 +84,7 @@ bool g4meover_app_scene_misc_on_event(void* context, SceneManagerEvent event) {
     return consumed;
 }
 
-void g4meover_app_scene_misc_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

@@ -13,7 +13,7 @@
 #include "animation_storage.h"
 #include "animation_manager.h"
 
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 #define TAG "AnimationManager"
 
@@ -218,8 +218,8 @@ static void animation_manager_start_new_idle(AnimationManager* animation_manager
     const BubbleAnimation* bubble_animation =
         animation_storage_get_bubble_animation(animation_manager->current_animation);
     animation_manager->state = AnimationManagerStateIdle;
-    int32_t duration = (g4meover_settings.cycle_anims == 0) ? (bubble_animation->duration) :
-                                                              (g4meover_settings.cycle_anims);
+    int32_t duration = (momentum_settings.cycle_anims == 0) ? (bubble_animation->duration) :
+                                                              (momentum_settings.cycle_anims);
     furi_timer_start(
         animation_manager->idle_animation_timer, (duration > 0) ? (duration * 1000) : 0);
 }
@@ -377,7 +377,7 @@ static bool animation_manager_is_valid_idle_animation(
 
         result = (sd_status == FSE_NOT_READY);
     }
-    if(!g4meover_settings.unlock_anims) {
+    if(!momentum_settings.unlock_anims) {
         if((stats->butthurt < info->min_butthurt) || (stats->butthurt > info->max_butthurt)) {
             result = false;
         }
@@ -572,9 +572,9 @@ void animation_manager_load_and_continue_animation(AnimationManager* animation_m
                     } else {
                         const BubbleAnimation* animation = animation_storage_get_bubble_animation(
                             animation_manager->current_animation);
-                        int32_t duration = (g4meover_settings.cycle_anims == 0) ?
+                        int32_t duration = (momentum_settings.cycle_anims == 0) ?
                                                (animation->duration) :
-                                               (g4meover_settings.cycle_anims);
+                                               (momentum_settings.cycle_anims);
                         furi_timer_start(
                             animation_manager->idle_animation_timer,
                             (duration > 0) ? (duration * 1000) : 0);

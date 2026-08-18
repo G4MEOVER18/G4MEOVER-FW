@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexDolphinLevel,
@@ -7,13 +7,13 @@ enum VarItemListIndex {
     VarItemListIndexButthurtTimer,
 };
 
-void g4meover_app_scene_misc_dolphin_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_dolphin_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-static void g4meover_app_scene_misc_dolphin_dolphin_level_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_dolphin_dolphin_level_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
 
     uint8_t index = variable_item_get_current_value_index(item);
     uint32_t xp = index > 0 ? DOLPHIN_LEVELS[index - 1] : 0;
@@ -37,8 +37,8 @@ static void g4meover_app_scene_misc_dolphin_dolphin_level_changed(VariableItem* 
     variable_item_set_current_value_text(item, xp_str);
 }
 
-static void g4meover_app_scene_misc_dolphin_dolphin_xp_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_dolphin_dolphin_xp_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
 
     // uin8_t index too small for all levels, use 3 fake items to
     // show buttons and change values in callback
@@ -66,8 +66,8 @@ static void g4meover_app_scene_misc_dolphin_dolphin_xp_changed(VariableItem* ite
         variable_item_list_get(app->var_item_list, VarItemListIndexDolphinLevel), level_str);
 }
 
-static void g4meover_app_scene_misc_dolphin_dolphin_angry_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_dolphin_dolphin_angry_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     app->dolphin_angry = variable_item_get_current_value_index(item);
     char angry_str[4];
     snprintf(angry_str, sizeof(angry_str), "%lu", app->dolphin_angry);
@@ -100,17 +100,17 @@ const uint32_t butthurt_timer_values[COUNT_OF(butthurt_timer_names)] = {
     86400,
     172800,
 };
-static void g4meover_app_scene_misc_dolphin_butthurt_timer_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_dolphin_butthurt_timer_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, butthurt_timer_names[index]);
-    g4meover_settings.butthurt_timer = butthurt_timer_values[index];
+    momentum_settings.butthurt_timer = butthurt_timer_values[index];
     app->save_settings = true;
     app->save_dolphin = true;
 }
 
-void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_dolphin_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
     uint8_t value_index;
@@ -124,7 +124,7 @@ void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
         var_item_list,
         "Dolphin Level",
         DOLPHIN_LEVEL_COUNT + 1,
-        g4meover_app_scene_misc_dolphin_dolphin_level_changed,
+        momentum_app_scene_misc_dolphin_dolphin_level_changed,
         app);
     variable_item_set_current_value_index(item, level - 1);
     variable_item_set_current_value_text(item, level_str);
@@ -134,7 +134,7 @@ void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
     // uin8_t index too small for all levels, use 3 fake items to
     // show buttons and change values in callback
     item = variable_item_list_add(
-        var_item_list, "Dolphin XP", 3, g4meover_app_scene_misc_dolphin_dolphin_xp_changed, app);
+        var_item_list, "Dolphin XP", 3, momentum_app_scene_misc_dolphin_dolphin_xp_changed, app);
     variable_item_set_current_value_index(
         item,
         app->dolphin_xp == 0              ? 0 :
@@ -148,7 +148,7 @@ void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
         var_item_list,
         "Dolphin Angry",
         BUTTHURT_MAX + 1,
-        g4meover_app_scene_misc_dolphin_dolphin_angry_changed,
+        momentum_app_scene_misc_dolphin_dolphin_angry_changed,
         app);
     variable_item_set_current_value_index(item, app->dolphin_angry);
     variable_item_set_current_value_text(item, angry_str);
@@ -164,10 +164,10 @@ void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
         var_item_list,
         "Butthurt Timer",
         COUNT_OF(butthurt_timer_names),
-        g4meover_app_scene_misc_dolphin_butthurt_timer_changed,
+        momentum_app_scene_misc_dolphin_butthurt_timer_changed,
         app);
     value_index = value_index_uint32(
-        g4meover_settings.butthurt_timer, butthurt_timer_values, COUNT_OF(butthurt_timer_values));
+        momentum_settings.butthurt_timer, butthurt_timer_values, COUNT_OF(butthurt_timer_values));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, butthurt_timer_names[value_index]);
     variable_item_set_locked(
@@ -179,26 +179,26 @@ void g4meover_app_scene_misc_dolphin_on_enter(void* context) {
         "is enabled!");
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_misc_dolphin_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_misc_dolphin_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
         var_item_list,
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneMiscDolphin));
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneMiscDolphin));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_misc_dolphin_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_misc_dolphin_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
         scene_manager_set_scene_state(
-            app->scene_manager, G4MEOVERAppSceneMiscDolphin, event.event);
+            app->scene_manager, MomentumAppSceneMiscDolphin, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexDolphinXp:
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscDolphinXp);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscDolphinXp);
             break;
         default:
             break;
@@ -208,7 +208,7 @@ bool g4meover_app_scene_misc_dolphin_on_event(void* context, SceneManagerEvent e
     return consumed;
 }
 
-void g4meover_app_scene_misc_dolphin_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_dolphin_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexInterface,
@@ -6,13 +6,13 @@ enum VarItemListIndex {
     VarItemListIndexMisc,
 };
 
-void g4meover_app_scene_start_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_start_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-void g4meover_app_scene_start_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_start_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
@@ -28,33 +28,33 @@ void g4meover_app_scene_start_on_enter(void* context) {
     variable_item_list_set_header(var_item_list, furi_string_get_cstr(app->version_tag));
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_start_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_start_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
-        var_item_list, scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneStart));
+        var_item_list, scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneStart));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_start_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_start_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
-        scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneStart, event.event);
+        scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneStart, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexInterface:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneInterface, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneInterface);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneInterface, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneInterface);
             break;
         case VarItemListIndexProtocols:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneProtocols, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocols);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneProtocols, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocols);
             break;
         case VarItemListIndexMisc:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMisc, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMisc);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMisc, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMisc);
             break;
         default:
             break;
@@ -64,7 +64,7 @@ bool g4meover_app_scene_start_on_event(void* context, SceneManagerEvent event) {
     return consumed;
 }
 
-void g4meover_app_scene_start_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_start_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

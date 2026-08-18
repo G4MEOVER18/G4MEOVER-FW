@@ -14,7 +14,7 @@ extern "C" {
 #define PLUGIN_APP_ID      "js"
 #define PLUGIN_API_VERSION 1
 
-#define JS_SDK_VENDOR_FIRMWARE "g4meover"
+#define JS_SDK_VENDOR_FIRMWARE "momentum"
 #define JS_SDK_VENDOR          "flipperdevices"
 #define JS_SDK_MAJOR           1
 #define JS_SDK_MINOR           0

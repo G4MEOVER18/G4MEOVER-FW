@@ -1,15 +1,15 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
-static void g4meover_app_scene_interface_mainmenu_reset_dialog_callback(
+static void momentum_app_scene_interface_mainmenu_reset_dialog_callback(
     DialogExResult result,
     void* context) {
-    G4MEOVERApp* app = context;
+    MomentumApp* app = context;
 
     view_dispatcher_send_custom_event(app->view_dispatcher, result);
 }
 
-void g4meover_app_scene_interface_mainmenu_reset_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_interface_mainmenu_reset_on_enter(void* context) {
+    MomentumApp* app = context;
     DialogEx* dialog_ex = app->dialog_ex;
 
     dialog_ex_set_header(dialog_ex, "Reset Menu Items?", 64, 10, AlignCenter, AlignCenter);
@@ -19,21 +19,21 @@ void g4meover_app_scene_interface_mainmenu_reset_on_enter(void* context) {
 
     dialog_ex_set_context(dialog_ex, app);
     dialog_ex_set_result_callback(
-        dialog_ex, g4meover_app_scene_interface_mainmenu_reset_dialog_callback);
+        dialog_ex, momentum_app_scene_interface_mainmenu_reset_dialog_callback);
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewDialogEx);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewDialogEx);
 }
 
-bool g4meover_app_scene_interface_mainmenu_reset_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_interface_mainmenu_reset_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
         switch(event.event) {
         case DialogExResultRight:
             storage_common_remove(app->storage, MAINMENU_APPS_PATH);
-            g4meover_app_empty_mainmenu_apps(app);
-            g4meover_app_load_mainmenu_apps(app);
+            momentum_app_empty_mainmenu_apps(app);
+            momentum_app_load_mainmenu_apps(app);
             app->mainmenu_app_index = 0;
             app->save_mainmenu_apps = false;
             /* fall through */
@@ -50,8 +50,8 @@ bool g4meover_app_scene_interface_mainmenu_reset_on_event(void* context, SceneMa
     return consumed;
 }
 
-void g4meover_app_scene_interface_mainmenu_reset_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_interface_mainmenu_reset_on_exit(void* context) {
+    MomentumApp* app = context;
     DialogEx* dialog_ex = app->dialog_ex;
 
     dialog_ex_reset(dialog_ex);

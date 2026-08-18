@@ -6,7 +6,7 @@ App(
     entry_point="lfrfid_app",
     icon="A_125khz_14",
     stack_size=2 * 1024,
-    order=20,
+    order=30,
     resources="resources",
     fap_libs=["assets"],
     fap_icon="icon.png",

@@ -8,7 +8,7 @@
         "types": [],
     },
     "files": [
-        "./node_modules/@next-flip/fz-sdk-g4mw/global.d.ts",
+        "./node_modules/@next-flip/fz-sdk-mntm/global.d.ts",
     ],
     "include": [
         "./**/*.ts",

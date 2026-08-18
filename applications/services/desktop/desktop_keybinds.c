@@ -66,11 +66,11 @@ const char* desktop_keybinds_defaults[DesktopKeybindTypeMAX][DesktopKeybindKeyMA
             [DesktopKeybindKeyRight] = "Passport",
             [DesktopKeybindKeyLeft] = "Clock",
         },
-    [DesktopKeybindTypeHold] =
+    [DesktopKeybindTypeHold] = // G4MEOVER: Power-App-Schnellzugriff auf Langdruck
         {
-            [DesktopKeybindKeyUp] = "_",
-            [DesktopKeybindKeyDown] = "_",
-            [DesktopKeybindKeyRight] = "Device Info",
+            [DesktopKeybindKeyUp] = "/ext/apps/Sub-GHz/rollforge.fap",
+            [DesktopKeybindKeyDown] = "/ext/apps/GPIO/jammer_suite.fap",
+            [DesktopKeybindKeyRight] = "/ext/apps/Sub-GHz/proto_pirate.fap",
             [DesktopKeybindKeyLeft] = "Lock with PIN",
         },
 };

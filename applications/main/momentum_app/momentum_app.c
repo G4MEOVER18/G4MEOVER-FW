@@ -1,9 +1,9 @@
-#include "g4meover_app.h"
+#include "momentum_app.h"
 #include <string.h>
 
-static bool g4meover_app_custom_event_callback(void* context, uint32_t event) {
+static bool momentum_app_custom_event_callback(void* context, uint32_t event) {
     furi_assert(context);
-    G4MEOVERApp* app = context;
+    MomentumApp* app = context;
     return scene_manager_handle_custom_event(app->scene_manager, event);
 }
 
@@ -13,7 +13,7 @@ void callback_reboot(void* context) {
     power_reboot(power, PowerBootModeNormal);
 }
 
-bool g4meover_app_apply(G4MEOVERApp* app) {
+bool momentum_app_apply(MomentumApp* app) {
     if(app->save_mainmenu_apps) {
         Stream* stream = file_stream_alloc(app->storage);
         if(file_stream_open(stream, MAINMENU_APPS_PATH, FSAM_READ_WRITE, FSOM_CREATE_ALWAYS)) {
@@ -118,7 +118,7 @@ bool g4meover_app_apply(G4MEOVERApp* app) {
     }
 
     if(app->save_settings) {
-        g4meover_settings_save();
+        momentum_settings_save();
     }
 
     if(app->show_slideshow) {
@@ -130,7 +130,7 @@ bool g4meover_app_apply(G4MEOVERApp* app) {
         popup_set_context(app->popup, app);
         popup_set_timeout(app->popup, 1000);
         popup_enable_timeout(app->popup);
-        view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewPopup);
+        view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewPopup);
         return true;
     } else if(app->apply_pack) {
         asset_packs_free();
@@ -140,18 +140,18 @@ bool g4meover_app_apply(G4MEOVERApp* app) {
         popup_set_context(app->popup, NULL);
         popup_set_timeout(app->popup, 0);
         popup_disable_timeout(app->popup);
-        view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewPopup);
+        view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewPopup);
         asset_packs_init();
     }
     return false;
 }
 
-static bool g4meover_app_back_event_callback(void* context) {
+static bool momentum_app_back_event_callback(void* context) {
     furi_assert(context);
-    G4MEOVERApp* app = context;
+    MomentumApp* app = context;
 
-    if(!scene_manager_has_previous_scene(app->scene_manager, G4MEOVERAppSceneStart)) {
-        if(g4meover_app_apply(app)) {
+    if(!scene_manager_has_previous_scene(app->scene_manager, MomentumAppSceneStart)) {
+        if(momentum_app_apply(app)) {
             return true;
         }
     }
@@ -160,11 +160,11 @@ static bool g4meover_app_back_event_callback(void* context) {
 }
 
 static void
-    g4meover_app_push_mainmenu_app_raw(G4MEOVERApp* app, FuriString* label, FuriString* exe) {
+    momentum_app_push_mainmenu_app_raw(MomentumApp* app, FuriString* label, FuriString* exe) {
     CharList_push_back(app->mainmenu_app_exes, strdup(furi_string_get_cstr(exe)));
     // Display logic mimics applications/services/gui/modules/menu.c
     if(furi_string_equal(label, "G4MEOVER")) {
-        furi_string_set(label, "G4MW");
+        furi_string_set(label, "MNTM");
     } else if(furi_string_equal(label, "125 kHz RFID")) {
         furi_string_set(label, "RFID");
     } else if(furi_string_equal(label, "Sub-GHz")) {
@@ -178,7 +178,7 @@ static void
     CharList_push_back(app->mainmenu_app_labels, strdup(furi_string_get_cstr(label)));
 }
 
-void g4meover_app_push_mainmenu_app(G4MEOVERApp* app, FuriString* exe) {
+void momentum_app_push_mainmenu_app(MomentumApp* app, FuriString* exe) {
     FuriString* label = furi_string_alloc();
     if(furi_string_start_with(exe, "/")) {
         uint8_t unused_icon[FAP_MANIFEST_MAX_ICON_SIZE];
@@ -187,7 +187,7 @@ void g4meover_app_push_mainmenu_app(G4MEOVERApp* app, FuriString* exe) {
             const char* end = strrchr(furi_string_get_cstr(exe), '/');
             furi_string_set(label, end ? end + 1 : furi_string_get_cstr(exe));
         }
-        g4meover_app_push_mainmenu_app_raw(app, label, exe);
+        momentum_app_push_mainmenu_app_raw(app, label, exe);
     } else {
         bool found = false;
         for(size_t i = 0; !found && i < FLIPPER_APPS_COUNT; i++) {
@@ -204,13 +204,13 @@ void g4meover_app_push_mainmenu_app(G4MEOVERApp* app, FuriString* exe) {
         }
         // Ignore unknown apps just like in main menu, prevents "ghost" apps when saving
         if(!furi_string_empty(label)) {
-            g4meover_app_push_mainmenu_app_raw(app, label, exe);
+            momentum_app_push_mainmenu_app_raw(app, label, exe);
         }
     }
     furi_string_free(label);
 }
 
-void g4meover_app_load_mainmenu_apps(G4MEOVERApp* app) {
+void momentum_app_load_mainmenu_apps(MomentumApp* app) {
     // Loading logic mimics applications/services/loader/loader_menu.c
     Stream* stream = file_stream_alloc(app->storage);
     FuriString* line = furi_string_alloc();
@@ -232,19 +232,19 @@ void g4meover_app_load_mainmenu_apps(G4MEOVERApp* app) {
                     furi_string_set(line, "G4MEOVER");
                 }
             }
-            g4meover_app_push_mainmenu_app(app, line);
+            momentum_app_push_mainmenu_app(app, line);
         }
     } else {
         for(size_t i = 0; i < FLIPPER_APPS_COUNT; i++) {
             furi_string_set(label, FLIPPER_APPS[i].name);
             furi_string_set(line, FLIPPER_APPS[i].name);
-            g4meover_app_push_mainmenu_app_raw(app, label, line);
+            momentum_app_push_mainmenu_app_raw(app, label, line);
         }
         // Until count - 1 because last app is hardcoded below
         for(size_t i = 0; i < FLIPPER_EXTERNAL_APPS_COUNT - 1; i++) {
             furi_string_set(label, FLIPPER_EXTERNAL_APPS[i].name);
             furi_string_set(line, FLIPPER_EXTERNAL_APPS[i].name);
-            g4meover_app_push_mainmenu_app_raw(app, label, line);
+            momentum_app_push_mainmenu_app_raw(app, label, line);
         }
     }
     free(unused_icon);
@@ -254,7 +254,7 @@ void g4meover_app_load_mainmenu_apps(G4MEOVERApp* app) {
     stream_free(stream);
 }
 
-void g4meover_app_empty_mainmenu_apps(G4MEOVERApp* app) {
+void momentum_app_empty_mainmenu_apps(MomentumApp* app) {
     CharList_it_t it;
     for(CharList_it(it, app->mainmenu_app_labels); !CharList_end_p(it); CharList_next(it)) {
         free(*CharList_cref(it));
@@ -266,8 +266,8 @@ void g4meover_app_empty_mainmenu_apps(G4MEOVERApp* app) {
     CharList_reset(app->mainmenu_app_exes);
 }
 
-G4MEOVERApp* g4meover_app_alloc() {
-    G4MEOVERApp* app = malloc(sizeof(G4MEOVERApp));
+MomentumApp* momentum_app_alloc() {
+    MomentumApp* app = malloc(sizeof(MomentumApp));
     app->gui = furi_record_open(RECORD_GUI);
     app->storage = furi_record_open(RECORD_STORAGE);
     app->desktop = furi_record_open(RECORD_DESKTOP);
@@ -278,14 +278,14 @@ G4MEOVERApp* g4meover_app_alloc() {
 
     // View Dispatcher and Scene Manager
     app->view_dispatcher = view_dispatcher_alloc();
-    app->scene_manager = scene_manager_alloc(&g4meover_app_scene_handlers, app);
+    app->scene_manager = scene_manager_alloc(&momentum_app_scene_handlers, app);
 
     view_dispatcher_set_event_callback_context(app->view_dispatcher, app);
 
     view_dispatcher_set_custom_event_callback(
-        app->view_dispatcher, g4meover_app_custom_event_callback);
+        app->view_dispatcher, momentum_app_custom_event_callback);
     view_dispatcher_set_navigation_event_callback(
-        app->view_dispatcher, g4meover_app_back_event_callback);
+        app->view_dispatcher, momentum_app_back_event_callback);
 
     view_dispatcher_attach_to_gui(app->view_dispatcher, app->gui, ViewDispatcherTypeFullscreen);
 
@@ -293,34 +293,34 @@ G4MEOVERApp* g4meover_app_alloc() {
     app->var_item_list = variable_item_list_alloc();
     view_dispatcher_add_view(
         app->view_dispatcher,
-        G4MEOVERAppViewVarItemList,
+        MomentumAppViewVarItemList,
         variable_item_list_get_view(app->var_item_list));
 
     app->submenu = submenu_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, G4MEOVERAppViewSubmenu, submenu_get_view(app->submenu));
+        app->view_dispatcher, MomentumAppViewSubmenu, submenu_get_view(app->submenu));
 
     app->text_input = text_input_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, G4MEOVERAppViewTextInput, text_input_get_view(app->text_input));
+        app->view_dispatcher, MomentumAppViewTextInput, text_input_get_view(app->text_input));
 
     app->byte_input = byte_input_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, G4MEOVERAppViewByteInput, byte_input_get_view(app->byte_input));
+        app->view_dispatcher, MomentumAppViewByteInput, byte_input_get_view(app->byte_input));
 
     app->number_input = number_input_alloc();
     view_dispatcher_add_view(
         app->view_dispatcher,
-        G4MEOVERAppViewNumberInput,
+        MomentumAppViewNumberInput,
         number_input_get_view(app->number_input));
 
     app->popup = popup_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, G4MEOVERAppViewPopup, popup_get_view(app->popup));
+        app->view_dispatcher, MomentumAppViewPopup, popup_get_view(app->popup));
 
     app->dialog_ex = dialog_ex_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, G4MEOVERAppViewDialogEx, dialog_ex_get_view(app->dialog_ex));
+        app->view_dispatcher, MomentumAppViewDialogEx, dialog_ex_get_view(app->dialog_ex));
 
     // Settings init
 
@@ -344,7 +344,7 @@ G4MEOVERApp* g4meover_app_alloc() {
                 if(app->asset_pack_index != 0) {
                     if(idx < app->asset_pack_index) app->asset_pack_index++;
                 } else {
-                    if(strcmp(copy, g4meover_settings.asset_pack) == 0)
+                    if(strcmp(copy, momentum_settings.asset_pack) == 0)
                         app->asset_pack_index = idx + 1;
                 }
             }
@@ -355,7 +355,7 @@ G4MEOVERApp* g4meover_app_alloc() {
 
     CharList_init(app->mainmenu_app_labels);
     CharList_init(app->mainmenu_app_exes);
-    g4meover_app_load_mainmenu_apps(app);
+    momentum_app_load_mainmenu_apps(app);
 
     desktop_api_get_settings(app->desktop, &app->desktop_settings);
 
@@ -404,7 +404,7 @@ G4MEOVERApp* g4meover_app_alloc() {
     // Need canvas to calculate text length
     Canvas* canvas = gui_direct_draw_acquire(app->gui);
     canvas_set_font(canvas, FontPrimary);
-    if(furi_string_equal(app->version_tag, "g4mw-dev")) {
+    if(furi_string_equal(app->version_tag, "mntm-dev")) {
         // Add space, add commit sha
         furi_string_cat_printf(app->version_tag, " %s", version_get_githash(NULL));
         // Make uppercase
@@ -419,7 +419,7 @@ G4MEOVERApp* g4meover_app_alloc() {
         }
     } else {
         // Make uppercase, add space, add build date
-        furi_string_replace(app->version_tag, "g4mw", "G4MW");
+        furi_string_replace(app->version_tag, "mntm", "MNTM");
         furi_string_cat_printf(app->version_tag, " %s", version_get_builddate(NULL));
     }
     // Add spaces to align right
@@ -432,23 +432,23 @@ G4MEOVERApp* g4meover_app_alloc() {
     return app;
 }
 
-void g4meover_app_free(G4MEOVERApp* app) {
+void momentum_app_free(MomentumApp* app) {
     furi_assert(app);
 
     // Gui modules
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewVarItemList);
     variable_item_list_free(app->var_item_list);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewSubmenu);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewSubmenu);
     submenu_free(app->submenu);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewTextInput);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewTextInput);
     text_input_free(app->text_input);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewByteInput);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewByteInput);
     byte_input_free(app->byte_input);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewNumberInput);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewNumberInput);
     number_input_free(app->number_input);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewPopup);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewPopup);
     popup_free(app->popup);
-    view_dispatcher_remove_view(app->view_dispatcher, G4MEOVERAppViewDialogEx);
+    view_dispatcher_remove_view(app->view_dispatcher, MomentumAppViewDialogEx);
     dialog_ex_free(app->dialog_ex);
 
     // View Dispatcher and Scene Manager
@@ -463,7 +463,7 @@ void g4meover_app_free(G4MEOVERApp* app) {
     }
     CharList_clear(app->asset_pack_names);
 
-    g4meover_app_empty_mainmenu_apps(app);
+    momentum_app_empty_mainmenu_apps(app);
     CharList_clear(app->mainmenu_app_labels);
     CharList_clear(app->mainmenu_app_exes);
 
@@ -483,19 +483,19 @@ void g4meover_app_free(G4MEOVERApp* app) {
     free(app);
 }
 
-extern int32_t g4meover_app(void* p) {
-    G4MEOVERApp* app = g4meover_app_alloc();
+extern int32_t momentum_app(void* p) {
+    MomentumApp* app = momentum_app_alloc();
 
     // Check for command line arguments to navigate to specific scenes
-    uint32_t first_scene = G4MEOVERAppSceneStart;
+    uint32_t first_scene = MomentumAppSceneStart;
     if(p && strlen(p)) {
         if(!strcmp(p, "MiscScreen")) {
-            first_scene = G4MEOVERAppSceneMiscScreen;
+            first_scene = MomentumAppSceneMiscScreen;
         }
     }
 
     scene_manager_next_scene(app->scene_manager, first_scene);
     view_dispatcher_run(app->view_dispatcher);
-    g4meover_app_free(app);
+    momentum_app_free(app);
     return 0;
 }

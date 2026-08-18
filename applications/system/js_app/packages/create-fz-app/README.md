@@ -1,15 +1,15 @@
-# G4MEOVER FW JavaScript SDK Wizard
+# Momentum FW JavaScript SDK Wizard
 This package contains an interactive wizard that lets you scaffold a JavaScript
-application for Flipper Zero using the G4MEOVER Firmware JS SDK.
+application for Flipper Zero using the Momentum Firmware JS SDK.
 
 This is a fork of the [Official Flipper Zero JS SDK Wizard](https://www.npmjs.com/package/@flipperdevices/create-fz-app),
-configured to use the [G4MEOVER JavaScript SDK]((https://www.npmjs.com/package/@next-flip/fz-sdk-g4mw)) instead.
+configured to use the [Momentum JavaScript SDK]((https://www.npmjs.com/package/@next-flip/fz-sdk-mntm)) instead.
 No other changes are included.
 
 ## Getting started
 Create your application using the interactive wizard:
 ```shell
-npx @next-flip/create-fz-app-g4mw@latest
+npx @next-flip/create-fz-app-mntm@latest
 ```
 
 Then, enter the directory with your application and launch it:

@@ -7,7 +7,7 @@ App(
     entry_point="bad_usb_app",
     stack_size=2 * 1024,
     icon="A_BadUsb_14",
-    order=70,
+    order=50,
     resources="resources",
     fap_libs=["assets", "ble_profile"],
     fap_icon="icon.png",

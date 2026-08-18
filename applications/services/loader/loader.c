@@ -10,7 +10,8 @@
 #include <flipper_application/flipper_application.h>
 #include <loader/firmware_api/firmware_api.h>
 
-#include <g4meover/asset_packs.h>
+#include <momentum/asset_packs.h>
+#include <momentum/settings.h>
 
 #define TAG "Loader"
 
@@ -575,7 +576,7 @@ static LoaderMessageLoaderStatusResult loader_start_external_app(
                 LoaderStatusErrorInternal, error_message, "Load failed, %s: %s", path, err_msg);
             result.error = loader_status_error_from_load_status(load_status);
             break;
-        } else if(api_mismatch) {
+        } else if(api_mismatch && !momentum_settings.api_mismatch_autoload) {
             // Successful map, but found api mismatch -> warn user
             const FlipperApplicationManifest* manifest =
                 flipper_application_get_manifest(loader->app.fap);
