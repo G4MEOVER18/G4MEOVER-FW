@@ -4,7 +4,7 @@
 #include <toolbox/saved_struct.h>
 #include <stdbool.h>
 #include <loader/loader.h>
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 #include "../desktop_i.h"
 #include <desktop/desktop_settings.h>
@@ -46,9 +46,9 @@ void desktop_scene_lock_menu_save_settings(Desktop* desktop) {
         notification_message_save_settings(desktop->lock_menu->notification);
         desktop->lock_menu->save_notification = false;
     }
-    if(desktop->lock_menu->save_g4meover) {
-        g4meover_settings_save();
-        desktop->lock_menu->save_g4meover = false;
+    if(desktop->lock_menu->save_momentum) {
+        momentum_settings_save();
+        desktop->lock_menu->save_momentum = false;
     }
     if(desktop->lock_menu->save_bt) {
         bt_settings_save(&desktop->lock_menu->bt->bt_settings);
@@ -116,7 +116,7 @@ bool desktop_scene_lock_menu_on_event(void* context, SceneManagerEvent event) {
             }
             consumed = true;
             break;
-        case DesktopLockMenuEventG4MEOVER:
+        case DesktopLockMenuEventMomentum:
             desktop_scene_lock_menu_save_settings(desktop);
             loader_start_detached_with_gui_error(desktop->loader, "G4MEOVER", NULL);
             consumed = true;

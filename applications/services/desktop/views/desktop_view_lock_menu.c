@@ -1,7 +1,7 @@
 #include <furi.h>
 #include <gui/elements.h>
 #include <assets_icons.h>
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 #include <furi_hal_rtc.h>
 
 #include "../desktop_i.h"
@@ -20,7 +20,7 @@ typedef enum {
     DesktopLockMenuIndexDarkMode,
     DesktopLockMenuIndexLock,
     DesktopLockMenuIndexBluetooth,
-    DesktopLockMenuIndexG4MEOVER,
+    DesktopLockMenuIndexMomentum,
     DesktopLockMenuIndexBrightness,
     DesktopLockMenuIndexVolume,
 
@@ -101,7 +101,7 @@ void desktop_lock_menu_draw_callback(Canvas* canvas, void* model) {
             break;
         case DesktopLockMenuIndexDarkMode:
             icon = &I_CC_DarkMode_16x16;
-            enabled = g4meover_settings.dark_mode;
+            enabled = momentum_settings.dark_mode;
             break;
         case DesktopLockMenuIndexLock:
             icon = &I_CC_Lock_16x16;
@@ -110,8 +110,8 @@ void desktop_lock_menu_draw_callback(Canvas* canvas, void* model) {
             icon = &I_CC_Bluetooth_16x16;
             enabled = m->lock_menu->bt->bt_settings.enabled;
             break;
-        case DesktopLockMenuIndexG4MEOVER:
-            icon = &I_CC_G4MEOVER_16x16;
+        case DesktopLockMenuIndexMomentum:
+            icon = &I_CC_Momentum_16x16;
             break;
         case DesktopLockMenuIndexBrightness:
             icon = &I_Pin_star_7x7;
@@ -167,7 +167,7 @@ void desktop_lock_menu_draw_callback(Canvas* canvas, void* model) {
     }
 
     if(m->show_lock_popup) {
-        if(g4meover_settings.popup_overlay) {
+        if(momentum_settings.popup_overlay) {
             canvas_draw_overlay(canvas);
         }
         canvas_set_font(canvas, FontSecondary);
@@ -292,8 +292,8 @@ bool desktop_lock_menu_input_callback(InputEvent* event, void* context) {
                 desktop_event = DesktopLockMenuEventSettings;
                 break;
             case DesktopLockMenuIndexDarkMode:
-                g4meover_settings.dark_mode = !g4meover_settings.dark_mode;
-                lock_menu->save_g4meover = true;
+                momentum_settings.dark_mode = !momentum_settings.dark_mode;
+                lock_menu->save_momentum = true;
                 break;
             case DesktopLockMenuIndexBluetooth:
                 lock_menu->bt->bt_settings.enabled = !lock_menu->bt->bt_settings.enabled;
@@ -304,8 +304,8 @@ bool desktop_lock_menu_input_callback(InputEvent* event, void* context) {
                 }
                 lock_menu->save_bt = true;
                 break;
-            case DesktopLockMenuIndexG4MEOVER:
-                desktop_event = DesktopLockMenuEventG4MEOVER;
+            case DesktopLockMenuIndexMomentum:
+                desktop_event = DesktopLockMenuEventMomentum;
                 break;
             case DesktopLockMenuIndexBrightness:
                 desktop_event = DesktopLockMenuEventScreenSettings;

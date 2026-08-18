@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum SubmenuIndex {
     SubmenuIndexMainApp,
@@ -19,13 +19,13 @@ static bool fap_selector_item_callback(
 }
 
 static void
-    g4meover_app_scene_interface_mainmenu_add_submenu_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
-    scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneInterfaceMainmenuAdd, index);
+    momentum_app_scene_interface_mainmenu_add_submenu_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
+    scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneInterfaceMainmenuAdd, index);
 
     switch(index) {
     case SubmenuIndexMainApp:
-        scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneInterfaceMainmenuAddMain);
+        scene_manager_next_scene(app->scene_manager, MomentumAppSceneInterfaceMainmenuAddMain);
         break;
     case SubmenuIndexExternalApp:
     case SubmenuIndexFileDirectory: {
@@ -43,11 +43,11 @@ static void
         FuriString* temp_path = furi_string_alloc_set_str(browser_options.base_path);
 
         if(dialog_file_browser_show(app->dialogs, temp_path, temp_path, &browser_options)) {
-            g4meover_app_push_mainmenu_app(app, temp_path);
+            momentum_app_push_mainmenu_app(app, temp_path);
             app->mainmenu_app_index = CharList_size(app->mainmenu_app_labels) - 1;
             app->save_mainmenu_apps = true;
             scene_manager_search_and_switch_to_previous_scene(
-                app->scene_manager, G4MEOVERAppSceneInterfaceMainmenu);
+                app->scene_manager, MomentumAppSceneInterfaceMainmenu);
         }
         furi_string_free(temp_path);
         break;
@@ -57,8 +57,8 @@ static void
     }
 }
 
-void g4meover_app_scene_interface_mainmenu_add_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_interface_mainmenu_add_on_enter(void* context) {
+    MomentumApp* app = context;
     Submenu* submenu = app->submenu;
 
     submenu_set_header(submenu, "Add Menu Item:");
@@ -67,27 +67,27 @@ void g4meover_app_scene_interface_mainmenu_add_on_enter(void* context) {
         submenu,
         "Main App",
         SubmenuIndexMainApp,
-        g4meover_app_scene_interface_mainmenu_add_submenu_callback,
+        momentum_app_scene_interface_mainmenu_add_submenu_callback,
         app);
 
     submenu_add_item(
         submenu,
         "External App",
         SubmenuIndexExternalApp,
-        g4meover_app_scene_interface_mainmenu_add_submenu_callback,
+        momentum_app_scene_interface_mainmenu_add_submenu_callback,
         app);
 
     submenu_add_item(
         submenu,
         "File / Directory (right btn)",
         SubmenuIndexFileDirectory,
-        g4meover_app_scene_interface_mainmenu_add_submenu_callback,
+        momentum_app_scene_interface_mainmenu_add_submenu_callback,
         app);
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewSubmenu);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewSubmenu);
 }
 
-bool g4meover_app_scene_interface_mainmenu_add_on_event(void* context, SceneManagerEvent event) {
+bool momentum_app_scene_interface_mainmenu_add_on_event(void* context, SceneManagerEvent event) {
     UNUSED(context);
     bool consumed = false;
 
@@ -98,7 +98,7 @@ bool g4meover_app_scene_interface_mainmenu_add_on_event(void* context, SceneMana
     return consumed;
 }
 
-void g4meover_app_scene_interface_mainmenu_add_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_interface_mainmenu_add_on_exit(void* context) {
+    MomentumApp* app = context;
     submenu_reset(app->submenu);
 }

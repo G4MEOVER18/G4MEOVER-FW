@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <m-dict.h>
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 #include <bt/bt_service/bt.h>
 
@@ -387,8 +387,8 @@ static void
 
 RpcSession* rpc_session_open(Rpc* rpc, RpcOwner owner) {
     if(furi_hal_rtc_is_flag_set(FuriHalRtcFlagLock)) {
-        if(owner == RpcOwnerUsb && !g4meover_settings.allow_locked_rpc_usb) return NULL;
-        if(owner == RpcOwnerBle && !g4meover_settings.allow_locked_rpc_ble) return NULL;
+        if(owner == RpcOwnerUsb && !momentum_settings.allow_locked_rpc_usb) return NULL;
+        if(owner == RpcOwnerBle && !momentum_settings.allow_locked_rpc_ble) return NULL;
     }
 
     furi_check(rpc);

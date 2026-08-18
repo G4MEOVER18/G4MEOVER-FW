@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexSubghzFreqs,
@@ -8,31 +8,31 @@ enum VarItemListIndex {
     VarItemListIndexFileNamingPrefix,
 };
 
-void g4meover_app_scene_protocols_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-static void g4meover_app_scene_protocols_subghz_bypass_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_protocols_subghz_bypass_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     view_dispatcher_send_custom_event(app->view_dispatcher, VarItemListIndexSubghzBypass);
 }
 
-static void g4meover_app_scene_protocols_subghz_extend_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_protocols_subghz_extend_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     view_dispatcher_send_custom_event(app->view_dispatcher, VarItemListIndexSubghzExtend);
 }
 
-static void g4meover_app_scene_protocols_file_naming_prefix_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_protocols_file_naming_prefix_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, value ? "After" : "Before");
-    g4meover_settings.file_naming_prefix_after = value;
+    momentum_settings.file_naming_prefix_after = value;
     app->save_settings = true;
 }
 
-void g4meover_app_scene_protocols_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
@@ -43,7 +43,7 @@ void g4meover_app_scene_protocols_on_enter(void* context) {
         var_item_list,
         "SubGHz Bypass Region Lock",
         2,
-        g4meover_app_scene_protocols_subghz_bypass_changed,
+        momentum_app_scene_protocols_subghz_bypass_changed,
         app);
     variable_item_set_current_value_index(item, app->subghz_bypass);
     variable_item_set_current_value_text(item, app->subghz_bypass ? "ON" : "OFF");
@@ -52,7 +52,7 @@ void g4meover_app_scene_protocols_on_enter(void* context) {
         var_item_list,
         "SubGHz Extend Freq Bands",
         2,
-        g4meover_app_scene_protocols_subghz_extend_changed,
+        momentum_app_scene_protocols_subghz_extend_changed,
         app);
     variable_item_set_current_value_index(item, app->subghz_extend);
     variable_item_set_current_value_text(item, app->subghz_extend ? "ON" : "OFF");
@@ -65,33 +65,33 @@ void g4meover_app_scene_protocols_on_enter(void* context) {
         var_item_list,
         "File Naming Prefix",
         2,
-        g4meover_app_scene_protocols_file_naming_prefix_changed,
+        momentum_app_scene_protocols_file_naming_prefix_changed,
         app);
-    variable_item_set_current_value_index(item, g4meover_settings.file_naming_prefix_after);
+    variable_item_set_current_value_index(item, momentum_settings.file_naming_prefix_after);
     variable_item_set_current_value_text(
-        item, g4meover_settings.file_naming_prefix_after ? "After" : "Before");
+        item, momentum_settings.file_naming_prefix_after ? "After" : "Before");
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_protocols_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_protocols_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
         var_item_list,
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneProtocols));
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneProtocols));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_protocols_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_protocols_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
-        scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneProtocols, event.event);
+        scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneProtocols, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexSubghzFreqs:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneProtocolsFreqs, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocolsFreqs);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneProtocolsFreqs, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocolsFreqs);
             break;
         case VarItemListIndexSubghzBypass:
         case VarItemListIndexSubghzExtend: {
@@ -142,8 +142,8 @@ bool g4meover_app_scene_protocols_on_event(void* context, SceneManagerEvent even
             break;
         }
         case VarItemListIndexGpioPins:
-            scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneProtocolsGpio, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocolsGpio);
+            scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneProtocolsGpio, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocolsGpio);
             break;
         default:
             break;
@@ -153,7 +153,7 @@ bool g4meover_app_scene_protocols_on_event(void* context, SceneManagerEvent even
     return consumed;
 }
 
-void g4meover_app_scene_protocols_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

@@ -4,7 +4,7 @@
 
 ### From Flipper
 
-On G4MEOVER Firmware, you can add manage frequencies list from Flipper from `G4MEOVER > Protocols > SubGHz Freqs`:
+On Momentum Firmware, you can add manage frequencies list from Flipper from `Momentum > Protocols > SubGHz Freqs`:
 - Use Defaults: whether to include default frequency list, if yes your custom frequencies go at END of default list
 - Static Freqs: list used by `Read`, `Read RAW` and `Frequency Analyzer`
 - Hopper Freqs: list used by `Read > Config > Hopping: ON`

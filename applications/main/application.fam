@@ -11,7 +11,7 @@ App(
         "subghz",
         "bad_kb",
         "u2f",
-        "g4meover_app",
+        "momentum_app",
         "archive",
         "main_apps_on_start",
     ],

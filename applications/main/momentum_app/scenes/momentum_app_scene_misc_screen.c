@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexDarkMode,
@@ -13,20 +13,20 @@ enum VarItemListIndex {
     VarItemListIndexRainbowSaturation,
 };
 
-void g4meover_app_scene_misc_screen_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_screen_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-static void g4meover_app_scene_misc_screen_dark_mode_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_dark_mode_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, value ? "ON" : "OFF");
-    g4meover_settings.dark_mode = value;
+    momentum_settings.dark_mode = value;
     app->save_settings = true;
 }
 
-static void g4meover_app_scene_misc_screen_hand_orient_changed(VariableItem* item) {
+static void momentum_app_scene_misc_screen_hand_orient_changed(VariableItem* item) {
     bool value = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     if(value) {
@@ -36,8 +36,8 @@ static void g4meover_app_scene_misc_screen_hand_orient_changed(VariableItem* ite
     }
 }
 
-static void g4meover_app_scene_misc_screen_rgb_backlight_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_rgb_backlight_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     view_dispatcher_send_custom_event(app->view_dispatcher, VarItemListIndexRgbBacklight);
 }
 
@@ -68,29 +68,29 @@ static const struct {
     // clang-format on
 };
 static const size_t lcd_sz = COUNT_OF(lcd_colors);
-static void g4meover_app_scene_misc_screen_lcd_color_changed(VariableItem* item, uint8_t led) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_lcd_color_changed(VariableItem* item, uint8_t led) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, lcd_colors[index].name);
     rgb_backlight_set_color(led, &lcd_colors[index].color);
     app->save_backlight = true;
 }
-static void g4meover_app_scene_misc_screen_lcd_color_0_changed(VariableItem* item) {
-    g4meover_app_scene_misc_screen_lcd_color_changed(item, 0);
+static void momentum_app_scene_misc_screen_lcd_color_0_changed(VariableItem* item) {
+    momentum_app_scene_misc_screen_lcd_color_changed(item, 0);
 }
-static void g4meover_app_scene_misc_screen_lcd_color_1_changed(VariableItem* item) {
-    g4meover_app_scene_misc_screen_lcd_color_changed(item, 1);
+static void momentum_app_scene_misc_screen_lcd_color_1_changed(VariableItem* item) {
+    momentum_app_scene_misc_screen_lcd_color_changed(item, 1);
 }
-static void g4meover_app_scene_misc_screen_lcd_color_2_changed(VariableItem* item) {
-    g4meover_app_scene_misc_screen_lcd_color_changed(item, 2);
+static void momentum_app_scene_misc_screen_lcd_color_2_changed(VariableItem* item) {
+    momentum_app_scene_misc_screen_lcd_color_changed(item, 2);
 }
 static const struct {
     uint8_t led;
     VariableItemChangeCallback cb;
 } lcd_cols[] = {
-    {0, g4meover_app_scene_misc_screen_lcd_color_0_changed},
-    {1, g4meover_app_scene_misc_screen_lcd_color_1_changed},
-    {2, g4meover_app_scene_misc_screen_lcd_color_2_changed},
+    {0, momentum_app_scene_misc_screen_lcd_color_0_changed},
+    {1, momentum_app_scene_misc_screen_lcd_color_1_changed},
+    {2, momentum_app_scene_misc_screen_lcd_color_2_changed},
 };
 
 const char* const rainbow_lcd_names[RGBBacklightRainbowModeCount] = {
@@ -98,16 +98,16 @@ const char* const rainbow_lcd_names[RGBBacklightRainbowModeCount] = {
     "Wave",
     "Static",
 };
-static void g4meover_app_scene_misc_screen_rainbow_lcd_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_rainbow_lcd_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, rainbow_lcd_names[index]);
     rgb_backlight_set_rainbow_mode(index);
     app->save_backlight = true;
 }
 
-static void g4meover_app_scene_misc_screen_rainbow_speed_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_rainbow_speed_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item) + 1;
     char str[4];
     snprintf(str, sizeof(str), "%d", index);
@@ -148,16 +148,16 @@ const uint32_t rainbow_interval_values[COUNT_OF(rainbow_interval_names)] = {
     4000,
     5000,
 };
-static void g4meover_app_scene_misc_screen_rainbow_interval_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_rainbow_interval_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, rainbow_interval_names[index]);
     rgb_backlight_set_rainbow_interval(rainbow_interval_values[index]);
     app->save_backlight = true;
 }
 
-static void g4meover_app_scene_misc_screen_rainbow_saturation_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_screen_rainbow_saturation_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item) + 1;
     char str[4];
     snprintf(str, sizeof(str), "%d", index);
@@ -166,19 +166,19 @@ static void g4meover_app_scene_misc_screen_rainbow_saturation_changed(VariableIt
     app->save_backlight = true;
 }
 
-void g4meover_app_scene_misc_screen_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_screen_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
     uint8_t value_index;
 
     item = variable_item_list_add(
-        var_item_list, "Dark Mode", 2, g4meover_app_scene_misc_screen_dark_mode_changed, app);
-    variable_item_set_current_value_index(item, g4meover_settings.dark_mode);
-    variable_item_set_current_value_text(item, g4meover_settings.dark_mode ? "ON" : "OFF");
+        var_item_list, "Dark Mode", 2, momentum_app_scene_misc_screen_dark_mode_changed, app);
+    variable_item_set_current_value_index(item, momentum_settings.dark_mode);
+    variable_item_set_current_value_text(item, momentum_settings.dark_mode ? "ON" : "OFF");
 
     item = variable_item_list_add(
-        var_item_list, "Left Handed", 2, g4meover_app_scene_misc_screen_hand_orient_changed, app);
+        var_item_list, "Left Handed", 2, momentum_app_scene_misc_screen_hand_orient_changed, app);
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagHandOrient);
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, value_index ? "ON" : "OFF");
@@ -187,9 +187,9 @@ void g4meover_app_scene_misc_screen_on_enter(void* context) {
         var_item_list,
         "RGB Backlight",
         2,
-        g4meover_app_scene_misc_screen_rgb_backlight_changed,
+        momentum_app_scene_misc_screen_rgb_backlight_changed,
         app);
-    value_index = g4meover_settings.rgb_backlight;
+    value_index = momentum_settings.rgb_backlight;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, value_index ? "ON" : "OFF");
 
@@ -214,38 +214,38 @@ void g4meover_app_scene_misc_screen_on_enter(void* context) {
             snprintf(str, sizeof(str), "%02X%02X%02X", color.r, color.g, color.b);
             variable_item_set_current_value_text(item, str);
         }
-        variable_item_set_locked(item, !g4meover_settings.rgb_backlight, "Needs RGB\nBacklight!");
+        variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
     }
 
     item = variable_item_list_add(
         var_item_list,
         "Rainbow LCD",
         RGBBacklightRainbowModeCount,
-        g4meover_app_scene_misc_screen_rainbow_lcd_changed,
+        momentum_app_scene_misc_screen_rainbow_lcd_changed,
         app);
     value_index = rgb_backlight_get_rainbow_mode();
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, rainbow_lcd_names[value_index]);
-    variable_item_set_locked(item, !g4meover_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
 
     item = variable_item_list_add(
         var_item_list,
         "Rainbow Speed",
         25,
-        g4meover_app_scene_misc_screen_rainbow_speed_changed,
+        momentum_app_scene_misc_screen_rainbow_speed_changed,
         app);
     value_index = rgb_backlight_get_rainbow_speed();
     variable_item_set_current_value_index(item, value_index - 1);
     char speed_str[4];
     snprintf(speed_str, sizeof(speed_str), "%d", value_index);
     variable_item_set_current_value_text(item, speed_str);
-    variable_item_set_locked(item, !g4meover_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
 
     item = variable_item_list_add(
         var_item_list,
         "Rainbow Interval",
         COUNT_OF(rainbow_interval_values),
-        g4meover_app_scene_misc_screen_rainbow_interval_changed,
+        momentum_app_scene_misc_screen_rainbow_interval_changed,
         app);
     value_index = value_index_uint32(
         rgb_backlight_get_rainbow_interval(),
@@ -253,44 +253,44 @@ void g4meover_app_scene_misc_screen_on_enter(void* context) {
         COUNT_OF(rainbow_interval_values));
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, rainbow_interval_names[value_index]);
-    variable_item_set_locked(item, !g4meover_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
 
     item = variable_item_list_add(
         var_item_list,
         "Rainbow Saturation",
         255,
-        g4meover_app_scene_misc_screen_rainbow_saturation_changed,
+        momentum_app_scene_misc_screen_rainbow_saturation_changed,
         app);
     value_index = rgb_backlight_get_rainbow_saturation();
     variable_item_set_current_value_index(item, value_index - 1);
     char saturation_str[4];
     snprintf(saturation_str, sizeof(saturation_str), "%d", value_index);
     variable_item_set_current_value_text(item, saturation_str);
-    variable_item_set_locked(item, !g4meover_settings.rgb_backlight, "Needs RGB\nBacklight!");
+    variable_item_set_locked(item, !momentum_settings.rgb_backlight, "Needs RGB\nBacklight!");
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_misc_screen_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_misc_screen_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
         var_item_list,
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneMiscScreen));
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneMiscScreen));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_misc_screen_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_misc_screen_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
-        scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscScreen, event.event);
+        scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscScreen, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexRgbBacklight: {
             VariableItem* item =
                 variable_item_list_get(app->var_item_list, VarItemListIndexRgbBacklight);
             bool value = variable_item_get_current_value_index(item);
-            if(value == g4meover_settings.rgb_backlight) value = !value; // Invoked via click
+            if(value == momentum_settings.rgb_backlight) value = !value; // Invoked via click
             bool change = !value; // Change without confirm if going from ON to OFF
             if(value) {
                 DialogMessage* msg = dialog_message_alloc();
@@ -309,7 +309,7 @@ bool g4meover_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
                 dialog_message_free(msg);
             }
             if(change) {
-                g4meover_settings.rgb_backlight = value;
+                momentum_settings.rgb_backlight = value;
                 app->save_settings = true;
                 app->save_backlight = true;
                 notification_message(app->notification, &sequence_display_backlight_on);
@@ -349,9 +349,9 @@ bool g4meover_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
         case VarItemListIndexLcdColor2:
             scene_manager_set_scene_state(
                 app->scene_manager,
-                G4MEOVERAppSceneMiscScreenColor,
+                MomentumAppSceneMiscScreenColor,
                 event.event - VarItemListIndexLcdColor0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscScreenColor);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscScreenColor);
             break;
         default:
             break;
@@ -361,7 +361,7 @@ bool g4meover_app_scene_misc_screen_on_event(void* context, SceneManagerEvent ev
     return consumed;
 }
 
-void g4meover_app_scene_misc_screen_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_screen_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

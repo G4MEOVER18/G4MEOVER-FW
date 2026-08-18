@@ -37,11 +37,11 @@ class GitVersion:
         branch = (
             os.environ.get("WORKFLOW_BRANCH_OR_TAG", None)
             or tag
-            or self._exec_git("rev-parse --abbrev-ref HEAD").removeprefix("g4meover-")
+            or self._exec_git("rev-parse --abbrev-ref HEAD").removeprefix("mntm-")
             or "unknown"
         )
 
-        version = tag or "g4meover-1.0.0"
+        version = "g4meover-2.0.0"  # G4MEOVER-FW v2 (ueberschreibt mntm-Tag)
 
         if "SOURCE_DATE_EPOCH" in os.environ:
             commit_date = datetime.utcfromtimestamp(
@@ -84,7 +84,7 @@ class GitVersion:
         if len(origins) == 1:
             return origins
         else:
-            return set(["https://github.com/Next-Flip/G4MEOVER-Firmware"])
+            return set(["https://github.com/G4MEOVER18/G4MEOVER-FW"])
 
     def _exec_git(self, args):
         cmd = ["git"]
@@ -188,4 +188,3 @@ class Main(App):
 
 if __name__ == "__main__":
     Main()()
-

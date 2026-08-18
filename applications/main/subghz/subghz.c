@@ -6,7 +6,7 @@
 #include <float_tools.h>
 #include "subghz_i.h"
 #include <applications/main/archive/helpers/archive_helpers_ext.h>
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 #include "subghz_fap.h"
 
@@ -390,7 +390,7 @@ int32_t subghz_app(char* p) {
     }
 
     // Check argument and run corresponding scene
-    bool is_favorite = process_favorite_launch(&p) && g4meover_settings.favorite_timeout;
+    bool is_favorite = process_favorite_launch(&p) && momentum_settings.favorite_timeout;
     if(p && strlen(p)) {
         uint32_t rpc_ctx = 0;
 

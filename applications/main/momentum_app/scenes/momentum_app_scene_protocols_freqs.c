@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexUseDefaults,
@@ -6,21 +6,21 @@ enum VarItemListIndex {
     VarItemListIndexHopperFreqs,
 };
 
-void g4meover_app_scene_protocols_freqs_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
-static void g4meover_app_scene_protocols_freqs_use_defaults_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_protocols_freqs_use_defaults_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     bool value = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, value ? "ON" : "OFF");
     app->subghz_use_defaults = value;
     app->save_subghz_freqs = true;
 }
 
-void g4meover_app_scene_protocols_freqs_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
 
@@ -28,7 +28,7 @@ void g4meover_app_scene_protocols_freqs_on_enter(void* context) {
         var_item_list,
         "Use Defaults",
         2,
-        g4meover_app_scene_protocols_freqs_use_defaults_changed,
+        momentum_app_scene_protocols_freqs_use_defaults_changed,
         app);
     variable_item_set_current_value_index(item, app->subghz_use_defaults);
     variable_item_set_current_value_text(item, app->subghz_use_defaults ? "ON" : "OFF");
@@ -40,33 +40,33 @@ void g4meover_app_scene_protocols_freqs_on_enter(void* context) {
     variable_item_set_current_value_text(item, ">");
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_protocols_freqs_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_protocols_freqs_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
         var_item_list,
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneProtocolsFreqs));
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneProtocolsFreqs));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_protocols_freqs_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_protocols_freqs_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
         scene_manager_set_scene_state(
-            app->scene_manager, G4MEOVERAppSceneProtocolsFreqs, event.event);
+            app->scene_manager, MomentumAppSceneProtocolsFreqs, event.event);
         consumed = true;
         switch(event.event) {
         case VarItemListIndexStaticFreqs:
             scene_manager_set_scene_state(
-                app->scene_manager, G4MEOVERAppSceneProtocolsFreqsStatic, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocolsFreqsStatic);
+                app->scene_manager, MomentumAppSceneProtocolsFreqsStatic, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocolsFreqsStatic);
             break;
         case VarItemListIndexHopperFreqs:
             scene_manager_set_scene_state(
-                app->scene_manager, G4MEOVERAppSceneProtocolsFreqsHopper, 0);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneProtocolsFreqsHopper);
+                app->scene_manager, MomentumAppSceneProtocolsFreqsHopper, 0);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneProtocolsFreqsHopper);
             break;
         default:
             break;
@@ -76,7 +76,7 @@ bool g4meover_app_scene_protocols_freqs_on_event(void* context, SceneManagerEven
     return consumed;
 }
 
-void g4meover_app_scene_protocols_freqs_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

@@ -76,6 +76,7 @@ typedef struct {
     bool lockscreen_poweroff;
     bool lockscreen_time;
     bool lockscreen_seconds;
+    bool api_mismatch_autoload;
     bool lockscreen_date;
     bool lockscreen_statusbar;
     bool lockscreen_prompt;

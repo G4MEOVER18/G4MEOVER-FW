@@ -19,7 +19,7 @@ struct DesktopLockMenuView {
     NotificationApp* notification;
     Bt* bt;
     bool save_notification;
-    bool save_g4meover;
+    bool save_momentum;
     bool save_bt;
 };
 

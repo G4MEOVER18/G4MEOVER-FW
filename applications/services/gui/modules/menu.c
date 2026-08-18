@@ -11,7 +11,7 @@
 #include <furi.h>
 #include <furi_hal.h>
 #include <m-array.h>
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 #include <m-string.h>
 
 struct Menu {
@@ -50,7 +50,7 @@ static void menu_get_name(MenuItem* item, FuriString* name, bool shorter) {
     furi_string_set(name, item->label);
     if(shorter) {
         if(!furi_string_cmp(name, "G4MEOVER")) {
-            furi_string_set(name, "G4MW");
+            furi_string_set(name, "G4M");
             return;
         } else if(!furi_string_cmp(name, "125 kHz RFID")) {
             furi_string_set(name, "RFID");
@@ -120,7 +120,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
         MenuItem* item;
         size_t shift_position;
         FuriString* name = furi_string_alloc();
-        switch(g4meover_settings.menu_style) {
+        switch(momentum_settings.menu_style) {
         case MenuStyleList: {
             for(uint8_t i = 0; i < 3; i++) {
                 canvas_set_font(canvas, i == 1 ? FontPrimary : FontSecondary);
@@ -386,7 +386,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 
             break;
         }
-        case MenuStyleG4MW: {
+        case MenuStyleMNTM: {
             canvas_set_font(canvas, FontPrimary);
             canvas_draw_icon(canvas, 62, 4, &I_Release_arrow_18x15);
             canvas_draw_line(canvas, 5, 15, 59, 15);
@@ -405,7 +405,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
                     hour -= 12;
                 }
                 if(hour == 0) {
-                    hour = (g4meover_settings.midnight_format_00 ? 0 : 12);
+                    hour = (momentum_settings.midnight_format_00 ? 0 : 12);
                 }
             }
             canvas_set_font(canvas, FontSecondary);
@@ -583,7 +583,7 @@ static void menu_draw_callback(Canvas* canvas, void* _model) {
 static bool menu_input_callback(InputEvent* event, void* context) {
     Menu* menu = context;
     bool consumed = true;
-    if(g4meover_settings.menu_style == MenuStyleVertical &&
+    if(momentum_settings.menu_style == MenuStyleVertical &&
        furi_hal_rtc_is_flag_set(FuriHalRtcFlagHandOrient)) {
         if(event->key == InputKeyLeft) {
             event->key = InputKeyRight;
@@ -820,9 +820,9 @@ static void menu_process_up(Menu* menu) {
             position = model->position;
             size_t count = MenuItemArray_size(model->items);
 
-            switch(g4meover_settings.menu_style) {
+            switch(momentum_settings.menu_style) {
             case MenuStyleList:
-            case MenuStyleG4MW:
+            case MenuStyleMNTM:
                 if(position > 0) {
                     position--;
                 } else {
@@ -862,9 +862,9 @@ static void menu_process_down(Menu* menu) {
             position = model->position;
             size_t count = MenuItemArray_size(model->items);
 
-            switch(g4meover_settings.menu_style) {
+            switch(momentum_settings.menu_style) {
             case MenuStyleList:
-            case MenuStyleG4MW:
+            case MenuStyleMNTM:
                 if(position < count - 1) {
                     position++;
                 } else {
@@ -904,7 +904,7 @@ static void menu_process_left(Menu* menu) {
             position = model->position;
             size_t count = MenuItemArray_size(model->items);
 
-            switch(g4meover_settings.menu_style) {
+            switch(momentum_settings.menu_style) {
             case MenuStyleWii:
                 if(position < 2) {
                     if(count % 2) {
@@ -964,7 +964,7 @@ static void menu_process_right(Menu* menu) {
             position = model->position;
             size_t count = MenuItemArray_size(model->items);
 
-            switch(g4meover_settings.menu_style) {
+            switch(momentum_settings.menu_style) {
             case MenuStyleWii:
                 if(count % 2) {
                     if(position == count - 1) {

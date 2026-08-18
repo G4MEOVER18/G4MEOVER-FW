@@ -1,0 +1,30 @@
+Filetype: Flipper Animation Manifest
+Version: 1
+
+Name: G4MEOVER_Attract_128x64
+Min butthurt: 0
+Max butthurt: 18
+Min level: 1
+Max level: 30
+Weight: 8
+
+Name: G4MEOVER_Hunt_128x64
+Min butthurt: 0
+Max butthurt: 18
+Min level: 1
+Max level: 30
+Weight: 7
+
+Name: G4MEOVER_Zap_128x64
+Min butthurt: 0
+Max butthurt: 18
+Min level: 1
+Max level: 30
+Weight: 6
+
+Name: G4MEOVER_Vanish_128x64
+Min butthurt: 0
+Max butthurt: 18
+Min level: 1
+Max level: 30
+Weight: 6

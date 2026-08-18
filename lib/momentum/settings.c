@@ -7,10 +7,11 @@
 #define TAG "MomentumSettings"
 
 MomentumSettings momentum_settings = {
-    .asset_pack = "", // Default
+    .asset_pack = "G4MEOVER", // G4MEOVER-FW: eigenes Arcade-Pack als Default
     .anim_speed = 100, // 100%
     .cycle_anims = 0, // Meta.txt
     .unlock_anims = false, // OFF
+    .api_mismatch_autoload = true, // Pentest: Apps ohne Nachfrage laden
     .menu_style = MenuStyleDsi, // DSi
     .lock_on_boot = true, // ON
     .bad_pins_format = false, // OFF
@@ -85,6 +86,7 @@ static const struct {
     {setting_uint(anim_speed, 25, 300)},
     {setting_int(cycle_anims, -1, 86400)},
     {setting_bool(unlock_anims)},
+    {setting_bool(api_mismatch_autoload)},
     {setting_enum(menu_style, MenuStyleCount)},
     {setting_bool(bad_pins_format)},
     {setting_bool(allow_locked_rpc_usb)},

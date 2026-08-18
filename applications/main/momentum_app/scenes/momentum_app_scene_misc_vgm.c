@@ -1,12 +1,12 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum VarItemListIndex {
     VarItemListIndexForeground,
     VarItemListIndexBackground,
 };
 
-void g4meover_app_scene_misc_vgm_var_item_list_callback(void* context, uint32_t index) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_vgm_var_item_list_callback(void* context, uint32_t index) {
+    MomentumApp* app = context;
     view_dispatcher_send_custom_event(app->view_dispatcher, index);
 }
 
@@ -42,46 +42,46 @@ static const struct {
 
 static const size_t vgm_colors_count = COUNT_OF(vgm_colors);
 
-static void g4meover_app_scene_misc_vgm_foreground_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_vgm_foreground_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, vgm_colors[index].name);
-    g4meover_settings.rpc_color_fg.rgb = vgm_colors[index].color;
+    momentum_settings.rpc_color_fg.rgb = vgm_colors[index].color;
 
     if(strcmp("Default", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_fg.mode = ScreenColorModeDefault;
+        momentum_settings.rpc_color_fg.mode = ScreenColorModeDefault;
     } else if(strcmp("Rainbow", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_fg.mode = ScreenColorModeRainbow;
+        momentum_settings.rpc_color_fg.mode = ScreenColorModeRainbow;
     } else if(strcmp("RgbMod", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_fg.mode = ScreenColorModeRgbBacklight;
+        momentum_settings.rpc_color_fg.mode = ScreenColorModeRgbBacklight;
     } else {
-        g4meover_settings.rpc_color_fg.mode = ScreenColorModeCustom;
+        momentum_settings.rpc_color_fg.mode = ScreenColorModeCustom;
     }
 
     app->save_settings = true;
 }
 
-static void g4meover_app_scene_misc_vgm_background_changed(VariableItem* item) {
-    G4MEOVERApp* app = variable_item_get_context(item);
+static void momentum_app_scene_misc_vgm_background_changed(VariableItem* item) {
+    MomentumApp* app = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, vgm_colors[index].name);
-    g4meover_settings.rpc_color_bg.rgb = vgm_colors[index].color;
+    momentum_settings.rpc_color_bg.rgb = vgm_colors[index].color;
 
     if(strcmp("Default", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_bg.mode = ScreenColorModeDefault;
+        momentum_settings.rpc_color_bg.mode = ScreenColorModeDefault;
     } else if(strcmp("Rainbow", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_bg.mode = ScreenColorModeRainbow;
+        momentum_settings.rpc_color_bg.mode = ScreenColorModeRainbow;
     } else if(strcmp("RgbMod", vgm_colors[index].name) == 0) {
-        g4meover_settings.rpc_color_bg.mode = ScreenColorModeRgbBacklight;
+        momentum_settings.rpc_color_bg.mode = ScreenColorModeRgbBacklight;
     } else {
-        g4meover_settings.rpc_color_bg.mode = ScreenColorModeCustom;
+        momentum_settings.rpc_color_bg.mode = ScreenColorModeCustom;
     }
 
     app->save_settings = true;
 }
 
-void g4meover_app_scene_misc_vgm_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_vgm_on_enter(void* context) {
+    MomentumApp* app = context;
     VariableItemList* var_item_list = app->var_item_list;
     VariableItem* item;
     uint8_t value_index;
@@ -90,9 +90,9 @@ void g4meover_app_scene_misc_vgm_on_enter(void* context) {
         var_item_list,
         "Foreground",
         vgm_colors_count,
-        g4meover_app_scene_misc_vgm_foreground_changed,
+        momentum_app_scene_misc_vgm_foreground_changed,
         app);
-    ScreenFrameColor color = g4meover_settings.rpc_color_fg;
+    ScreenFrameColor color = momentum_settings.rpc_color_fg;
     bool found = true;
     if(color.mode == ScreenColorModeRainbow) {
         value_index = 1;
@@ -123,9 +123,9 @@ void g4meover_app_scene_misc_vgm_on_enter(void* context) {
         var_item_list,
         "Background",
         vgm_colors_count,
-        g4meover_app_scene_misc_vgm_background_changed,
+        momentum_app_scene_misc_vgm_background_changed,
         app);
-    color = g4meover_settings.rpc_color_bg;
+    color = momentum_settings.rpc_color_bg;
     found = true;
     if(color.mode == ScreenColorModeRainbow) {
         value_index = 1;
@@ -153,20 +153,20 @@ void g4meover_app_scene_misc_vgm_on_enter(void* context) {
     }
 
     variable_item_list_set_enter_callback(
-        var_item_list, g4meover_app_scene_misc_vgm_var_item_list_callback, app);
+        var_item_list, momentum_app_scene_misc_vgm_var_item_list_callback, app);
 
     variable_item_list_set_selected_item(
-        var_item_list, scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneMiscVgm));
+        var_item_list, scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneMiscVgm));
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewVarItemList);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewVarItemList);
 }
 
-bool g4meover_app_scene_misc_vgm_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_misc_vgm_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
-        scene_manager_set_scene_state(app->scene_manager, G4MEOVERAppSceneMiscVgm, event.event);
+        scene_manager_set_scene_state(app->scene_manager, MomentumAppSceneMiscVgm, event.event);
         consumed = true;
 
         switch(event.event) {
@@ -174,9 +174,9 @@ bool g4meover_app_scene_misc_vgm_on_event(void* context, SceneManagerEvent event
         case VarItemListIndexBackground:
             scene_manager_set_scene_state(
                 app->scene_manager,
-                G4MEOVERAppSceneMiscVgmColor,
+                MomentumAppSceneMiscVgmColor,
                 event.event - VarItemListIndexForeground);
-            scene_manager_next_scene(app->scene_manager, G4MEOVERAppSceneMiscVgmColor);
+            scene_manager_next_scene(app->scene_manager, MomentumAppSceneMiscVgmColor);
             break;
         default:
             break;
@@ -186,7 +186,7 @@ bool g4meover_app_scene_misc_vgm_on_event(void* context, SceneManagerEvent event
     return consumed;
 }
 
-void g4meover_app_scene_misc_vgm_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_misc_vgm_on_exit(void* context) {
+    MomentumApp* app = context;
     variable_item_list_reset(app->var_item_list);
 }

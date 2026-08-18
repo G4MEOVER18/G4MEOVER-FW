@@ -1,12 +1,12 @@
 {
-  "name": "@next-flip/create-fz-app-g4mw",
+  "name": "@next-flip/create-fz-app-mntm",
   "version": "0.1.2",
-  "description": "Template package for JS apps for Flipper Zero using G4MEOVER Custom Firmware JS SDK",
+  "description": "Template package for JS apps for Flipper Zero using Momentum Custom Firmware JS SDK",
   "bin": "index.js",
   "type": "module",
   "keywords": [
-    "g4meover",
-    "g4meover firmware",
+    "momentum",
+    "momentum firmware",
     "next-flip",
     "flipper",
     "flipper zero"
@@ -15,7 +15,7 @@
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Next-Flip/G4MEOVER-Firmware.git",
+    "url": "git+https://github.com/Next-Flip/Momentum-Firmware.git",
     "directory": "applications/system/js_app/packages/create-fz-app"
   },
   "dependencies": {

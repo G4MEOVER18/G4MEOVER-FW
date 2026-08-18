@@ -30,17 +30,20 @@ if not os.environ.get("DIST_SUFFIX"):
         )
 
     try:
-        # For tags, dist name is just the tag name: g4mw-(ver)
+        # For tags, dist name is just the tag name: mntm-(ver)
         DIST_SUFFIX = git("describe", "--tags", "--abbrev=0", "--exact-match")
     except Exception:
-        # If not a tag, dist name is: g4mw-(branch)-(commmit)
-        branch_name = git("rev-parse", "--abbrev-ref", "HEAD").removeprefix("g4mw-")
+        # If not a tag, dist name is: mntm-(branch)-(commmit)
+        branch_name = git("rev-parse", "--abbrev-ref", "HEAD").removeprefix("mntm-")
         commit_sha = git("rev-parse", "HEAD")[:8]
-        DIST_SUFFIX = f"g4meover-1.0.0-{commit_sha}"
+        DIST_SUFFIX = f"mntm-{branch_name}-{commit_sha}"
     # Dist name is only for naming of output files
     DIST_SUFFIX = DIST_SUFFIX.replace("/", "-")
-    # Instead, FW version uses tag name (g4mw-xxx), or "g4mw-dev" if not a tag (see scripts/version.py)
+    # Instead, FW version uses tag name (mntm-xxx), or "mntm-dev" if not a tag (see scripts/version.py)
     # You can get commit and branch info in firmware with appropriate version_get_*() calls
+
+# G4MEOVER-FW v2: feste Distributions-Kennung (ueberschreibt git-basierte Benennung)
+DIST_SUFFIX = "g4meover-2.0.0"
 
 # Skip external apps by default
 SKIP_EXTERNAL = False
@@ -128,4 +131,3 @@ custom_options_fn = "fbt_options_local.py"
 
 if Path(custom_options_fn).exists():
     exec(compile(Path(custom_options_fn).read_text(), custom_options_fn, "exec"))
-

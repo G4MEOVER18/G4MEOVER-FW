@@ -1,12 +1,12 @@
-# G4MEOVER FW JavaScript SDK
+# Momentum FW JavaScript SDK
 This package contains tooling and typings for developing Flipper Zero
-applications in JavaScript for G4MEOVER Custom Firmware.
+applications in JavaScript for Momentum Custom Firmware.
 
 This is a fork of the [Official Flipper Zero JS SDK](https://www.npmjs.com/package/@flipperdevices/fz-sdk),
-with added types for the extra features provided by the G4MEOVER JavaScript API.
+with added types for the extra features provided by the Momentum JavaScript API.
 
-Scripts made for Official Flipper Zero JS SDK will work on G4MEOVER Firmware too.
-If you use extra features provided by G4MEOVER, you are encouraged to use syntax like
+Scripts made for Official Flipper Zero JS SDK will work on Momentum Firmware too.
+If you use extra features provided by Momentum, you are encouraged to use syntax like
 `if (doesSdkSupport(["feature-name"])) { ... }` so that your JS app can work on Official
 Firmware too, aswell as all other compliant Custom Firmwares. If some of those extra
 features are essential to the functionality of your app, you can use `checkSdkFeatures(["feature1", "feature2"])`
@@ -16,7 +16,7 @@ are not available in their firmware distribution.
 ## Getting started
 Create your application using the interactive wizard:
 ```shell
-npx @next-flip/create-fz-app-g4mw@latest
+npx @next-flip/create-fz-app-mntm@latest
 ```
 
 Then, enter the directory with your application and launch it:

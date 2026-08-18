@@ -18,15 +18,15 @@
 #include <gui/modules/popup.h>
 #include <gui/modules/dialog_ex.h>
 
-#include <g4meover/asset_packs.h>
+#include <momentum/asset_packs.h>
 #include <loader/loader_menu.h>
 #include <lib/subghz/subghz_setting.h>
 #include <rgb_backlight.h>
-#include <g4meover/namespoof.h>
+#include <momentum/namespoof.h>
 #include <dolphin/dolphin.h>
 #include <dolphin/dolphin_i.h>
 #include <dolphin/helpers/dolphin_state.h>
-#include <g4meover/settings.h>
+#include <momentum/settings.h>
 #include <desktop/views/desktop_view_slideshow.h>
 
 #include <applications.h>
@@ -39,7 +39,7 @@
 #include <m-array.h>
 #include <toolbox/stream/file_stream.h>
 
-#include "scenes/g4meover_app_scene.h"
+#include "scenes/momentum_app_scene.h"
 
 ARRAY_DEF(CharList, char*)
 
@@ -97,20 +97,20 @@ typedef struct {
     bool apply_pack;
     bool show_slideshow;
     bool require_reboot;
-} G4MEOVERApp;
+} MomentumApp;
 
 typedef enum {
-    G4MEOVERAppViewVarItemList,
-    G4MEOVERAppViewSubmenu,
-    G4MEOVERAppViewTextInput,
-    G4MEOVERAppViewByteInput,
-    G4MEOVERAppViewNumberInput,
-    G4MEOVERAppViewPopup,
-    G4MEOVERAppViewDialogEx,
-} G4MEOVERAppView;
+    MomentumAppViewVarItemList,
+    MomentumAppViewSubmenu,
+    MomentumAppViewTextInput,
+    MomentumAppViewByteInput,
+    MomentumAppViewNumberInput,
+    MomentumAppViewPopup,
+    MomentumAppViewDialogEx,
+} MomentumAppView;
 
-bool g4meover_app_apply(G4MEOVERApp* app);
+bool momentum_app_apply(MomentumApp* app);
 
-void g4meover_app_push_mainmenu_app(G4MEOVERApp* app, FuriString* exe);
-void g4meover_app_load_mainmenu_apps(G4MEOVERApp* app);
-void g4meover_app_empty_mainmenu_apps(G4MEOVERApp* app);
+void momentum_app_push_mainmenu_app(MomentumApp* app, FuriString* exe);
+void momentum_app_load_mainmenu_apps(MomentumApp* app);
+void momentum_app_empty_mainmenu_apps(MomentumApp* app);

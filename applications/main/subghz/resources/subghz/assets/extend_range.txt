@@ -1,0 +1,6 @@
+Filetype: Flipper SubGhz Setting File
+Version: 1
+# G4MEOVER-FW Pentest-Default: erweiterter Frequenzbereich + Region-Bypass
+# Nur fuer autorisierte Security-Tests / eigenes Geraet. Nutzung auf eigene Verantwortung.
+use_ext_range_at_own_risk: true
+ignore_default_tx_region: true

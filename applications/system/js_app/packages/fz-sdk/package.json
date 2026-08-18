@@ -1,10 +1,10 @@
 {
-  "name": "@next-flip/fz-sdk-g4mw",
+  "name": "@next-flip/fz-sdk-mntm",
   "version": "1.0.0",
-  "description": "Type declarations and documentation for native JS modules available on G4MEOVER Custom Firmware for Flipper Zero",
+  "description": "Type declarations and documentation for native JS modules available on Momentum Custom Firmware for Flipper Zero",
   "keywords": [
-    "g4meover",
-    "g4meover firmware",
+    "momentum",
+    "momentum firmware",
     "next-flip",
     "flipper",
     "flipper zero",
@@ -14,7 +14,7 @@
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Next-Flip/G4MEOVER-Firmware.git",
+    "url": "git+https://github.com/Next-Flip/Momentum-Firmware.git",
     "directory": "applications/system/js_app/packages/fz-sdk"
   },
   "type": "module",

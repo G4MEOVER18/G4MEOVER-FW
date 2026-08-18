@@ -1,4 +1,4 @@
-#include "../g4meover_app.h"
+#include "../momentum_app.h"
 
 enum NumberInputResult {
     NumberInputResultOk,
@@ -6,8 +6,8 @@ enum NumberInputResult {
 };
 
 static void
-    g4meover_app_scene_protocols_freqs_add_number_input_callback(void* context, int32_t number) {
-    G4MEOVERApp* app = context;
+    momentum_app_scene_protocols_freqs_add_number_input_callback(void* context, int32_t number) {
+    MomentumApp* app = context;
 
     uint32_t value = number * 1000;
     if(!furi_hal_subghz_is_frequency_valid(value)) {
@@ -15,7 +15,7 @@ static void
         return;
     }
     bool is_hopper =
-        scene_manager_get_scene_state(app->scene_manager, G4MEOVERAppSceneProtocolsFreqsAdd);
+        scene_manager_get_scene_state(app->scene_manager, MomentumAppSceneProtocolsFreqsAdd);
     if(is_hopper) {
         FrequencyList_push_back(app->subghz_hopper_freqs, value);
     } else {
@@ -25,30 +25,30 @@ static void
     view_dispatcher_send_custom_event(app->view_dispatcher, NumberInputResultOk);
 }
 
-void g4meover_app_scene_protocols_freqs_add_on_enter(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_add_on_enter(void* context) {
+    MomentumApp* app = context;
     NumberInput* number_input = app->number_input;
 
     number_input_set_header_text(number_input, "Use kHz values, like 433920");
 
     number_input_set_result_callback(
         number_input,
-        g4meover_app_scene_protocols_freqs_add_number_input_callback,
+        momentum_app_scene_protocols_freqs_add_number_input_callback,
         app,
         0,
         100000,
         999999);
 
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewNumberInput);
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewNumberInput);
 }
 
 void callback_return(void* context) {
-    G4MEOVERApp* app = context;
-    view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewNumberInput);
+    MomentumApp* app = context;
+    view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewNumberInput);
 }
 
-bool g4meover_app_scene_protocols_freqs_add_on_event(void* context, SceneManagerEvent event) {
-    G4MEOVERApp* app = context;
+bool momentum_app_scene_protocols_freqs_add_on_event(void* context, SceneManagerEvent event) {
+    MomentumApp* app = context;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
@@ -71,7 +71,7 @@ bool g4meover_app_scene_protocols_freqs_add_on_event(void* context, SceneManager
             popup_set_context(app->popup, app);
             popup_set_timeout(app->popup, 1000);
             popup_enable_timeout(app->popup);
-            view_dispatcher_switch_to_view(app->view_dispatcher, G4MEOVERAppViewPopup);
+            view_dispatcher_switch_to_view(app->view_dispatcher, MomentumAppViewPopup);
             break;
         default:
             break;
@@ -81,8 +81,8 @@ bool g4meover_app_scene_protocols_freqs_add_on_event(void* context, SceneManager
     return consumed;
 }
 
-void g4meover_app_scene_protocols_freqs_add_on_exit(void* context) {
-    G4MEOVERApp* app = context;
+void momentum_app_scene_protocols_freqs_add_on_exit(void* context) {
+    MomentumApp* app = context;
     number_input_set_result_callback(app->number_input, NULL, NULL, 0, 0, 0);
     number_input_set_header_text(app->number_input, "");
 }

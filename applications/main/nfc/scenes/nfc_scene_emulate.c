@@ -2,7 +2,7 @@
 
 #include "nfc_app_i.h"
 
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 FuriTimer* timer_auto_exit = NULL;
 
@@ -23,7 +23,7 @@ void nfc_scene_emulate_on_enter(void* context) {
             furi_timer_alloc(nfc_scene_emulate_timer_callback, FuriTimerTypeOnce, instance);
         furi_timer_start(
             timer_auto_exit,
-            g4meover_settings.favorite_timeout * furi_kernel_get_tick_frequency());
+            momentum_settings.favorite_timeout * furi_kernel_get_tick_frequency());
     }
 }
 

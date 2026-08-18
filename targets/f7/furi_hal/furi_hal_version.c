@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <ble/ble.h>
 
-#include <g4meover/g4meover.h>
+#include <momentum/momentum.h>
 
 #define TAG "FuriHalVersion"
 
@@ -239,10 +239,10 @@ uint8_t furi_hal_version_get_hw_body(void) {
 }
 
 FuriHalVersionColor furi_hal_version_get_hw_color(void) {
-    if(g4meover_settings.spoof_color == FuriHalVersionColorUnknown) {
+    if(momentum_settings.spoof_color == FuriHalVersionColorUnknown) {
         return furi_hal_version.board_color;
     }
-    return g4meover_settings.spoof_color;
+    return momentum_settings.spoof_color;
 }
 
 uint8_t furi_hal_version_get_hw_connect(void) {
